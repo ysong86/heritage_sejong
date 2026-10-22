@@ -7,10 +7,10 @@
 
 ```
 C:\Python313\python.exe collect.py     # HWP 137건 + 국가유산청 Open API(사진·설명·좌표) + 브이월드 주소 좌표 → data/heritage.json
-C:\Python313\python.exe analyze.py     # 분류·이모지·시대·걷기 쉬움·3D 건물 → data/analysis.json, data/b3d.json
-C:\Python313\python.exe build.py       # template.html → site/index.html + site/b3d.json
+C:\Python313\python.exe analyze.py     # 분류·이모지·시대·걷기 쉬움·3D 건물 → data/analysis.json (b3d.json 도 만들지만 배포 안 함)
+C:\Python313\python.exe build.py       # template.html → site/index.html
 ```
-→ gh-pages 에 site/index.html·b3d.json·.nojekyll 한 커밋(공개, 비밀번호 없음).
+→ gh-pages 에 site/index.html·.nojekyll 한 커밋(공개, 비밀번호 없음).
 
 ## 탭
 ① 유산 찾기(지정·관리 현황 검색) ② 시대의 지층(시간 여행 막대) ③ 이야기 코스 ④ 세시 달력 ⑤ 개발과 유산 ⑥ 누구나 누리는 유산(향유권·물리적 접근). 유산마다 상세 카드(사진·설명·길찾기). 3D 보기는 만들었다가 뺐다(사용자 판단).
