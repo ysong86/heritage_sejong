@@ -137,7 +137,7 @@ def main():
                "built": dt.datetime.now().strftime("%Y-%m-%d")}
     data_js = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     # 제작 표기(사용자 지정 2026-10-22): 이재민 센터장은 세종지역학센터, 송양호 책임연구위원은 센터 소속 아님 — 줄을 나눠 구분
-    foot = ('<footer class="foot"><dl class="credit"><dt>제작</dt><dd><b>세종연구원 세종지역학센터</b><span>이재민 센터장</span>'
+    foot = ('<footer class="foot"><dl class="credit"><dt>제작</dt><dd><b>세종연구원 세종지역학센터</b><span>이재민 센터장, 이혜원 연구원</span>'
             '<b>세종연구원</b><span>송양호 책임연구위원</span></dd>'
             '<dt>문의</dt><dd><a href="mailto:ysong@sri.re.kr">ysong@sri.re.kr</a> 로 연락 주시기 바랍니다.</dd></dl>%s</footer>'
             % (
