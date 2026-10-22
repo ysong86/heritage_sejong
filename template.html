@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>세종 국가유산 상황판</title>
+<meta name="description" content="세종시 국가유산 지정(등록) 현황 137건을 이모지 지도로 찾고, 시대의 지층·이야기 코스·세시 달력·개발과 유산·누구나 누리는 유산(향유권·물리적 접근)·3D 보기로 읽습니다.">
+<script>(function(){try{var t=localStorage.getItem('heritage-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Jua&display=swap">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<style>
+:root{--paper:#F3F2EE;--panel:#FBFAF7;--ink:#111110;--ink2:#4A4A47;--ink3:#8B8A85;--rule:#11111022;--rule2:#1111110F;
+  --accent:#152484;--accent-rgb:21,36,132;--warn:#8A5A12;--bad:#A3321F;--good:#1F6B4A;--bar:rgba(243,242,238,.94);--tipbg:#111110;--tipink:#F3F2EE;
+  --mk:#FFFFFF;--mono:"IBM Plex Mono","IBM Plex Sans KR",ui-monospace,monospace}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#0F0F0E;--panel:#161615;--ink:#EDECE8;--ink2:#B2B1AC;
+  --ink3:#76756F;--rule:#EDECE826;--rule2:#EDECE812;--accent:#8EA0F2;--accent-rgb:142,160,242;--warn:#E9B865;--bad:#F08A73;--good:#7CCFA6;--bar:rgba(15,15,14,.94);
+  --tipbg:#EDECE8;--tipink:#0F0F0E;--mk:#1E1E1C;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#0F0F0E;--panel:#161615;--ink:#EDECE8;--ink2:#B2B1AC;--ink3:#76756F;--rule:#EDECE826;--rule2:#EDECE812;
+  --accent:#8EA0F2;--accent-rgb:142,160,242;--warn:#E9B865;--bad:#F08A73;--good:#7CCFA6;--bar:rgba(15,15,14,.94);--tipbg:#EDECE8;--tipink:#0F0F0E;--mk:#1E1E1C;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans KR","Malgun Gothic",system-ui,sans-serif;line-height:1.55;
+  word-break:keep-all;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+.num,.mono{font-family:var(--mono);font-variant-numeric:tabular-nums;letter-spacing:.01em}
+.wrap{max-width:1360px;margin:0 auto;padding:0 32px 48px}
+.mast{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 0;border-bottom:1px solid var(--ink)}
+.mast .brand{font-size:12.5px;letter-spacing:.04em}
+.mast .brand b{font-weight:700}
+.mast .brand span{color:var(--ink3);margin-left:10px;letter-spacing:.14em;font-size:11px}
+.theme-toggle{display:flex;gap:2px;border:1px solid var(--rule);padding:2px}
+.theme-toggle button{border:0;background:none;padding:3px 9px;font-size:12px;color:var(--ink3)}
+.theme-toggle button.on{background:var(--ink);color:var(--paper)}
+.hero{padding:34px 0 26px;border-bottom:1px solid var(--rule)}
+.hero .kick{font-size:12px;color:var(--ink3);letter-spacing:.14em;margin-bottom:10px}
+.hero h1{margin:0 0 16px;font-size:clamp(30px,4.4vw,60px);line-height:1.05;letter-spacing:-.04em;font-weight:700}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero .lede{max-width:900px;margin:0;font-size:15px;color:var(--ink2)}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:26px;border-top:1px solid var(--ink)}
+.kpi{padding:14px 18px 12px 0;border-right:1px solid var(--rule)}
+.kpi+.kpi{padding-left:18px}
+.kpi:last-child{border-right:0}
+.kpi .l{font-size:12.5px;color:var(--ink2)}
+.kpi .v{font-size:32px;font-weight:500;letter-spacing:-.02em;font-family:var(--mono);margin:4px 0 2px}
+.kpi .v small{font-size:14px;color:var(--ink3);margin-left:4px;font-family:"IBM Plex Sans KR",sans-serif}
+.kpi .c{font-size:12.5px;color:var(--ink2)}
+.kpi .c b{color:var(--accent);font-weight:600}
+.src{font-size:11.5px;color:var(--ink3);margin-top:6px;line-height:1.45}
+.est{color:var(--warn);font-size:11.5px;white-space:nowrap}
+h2{font-size:13px;letter-spacing:.14em;color:var(--ink3);font-weight:500;margin:34px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--ink)}
+h2 b{color:var(--ink);letter-spacing:0;font-size:17px;margin-right:10px}
+h3{font-size:14px;margin:22px 0 8px;font-weight:600}
+/* 탭 */
+.tabs{display:flex;flex-wrap:wrap;border-bottom:1px solid var(--ink);margin-top:30px;position:sticky;top:0;z-index:30;background:var(--bar);backdrop-filter:blur(6px)}
+.tab{border:0;background:none;padding:12px 15px 10px;font-size:14px;font-weight:600;color:var(--ink2);border-bottom:3px solid transparent;margin-bottom:-1px;text-align:left}
+.tab small{display:block;font-size:11px;font-weight:400;color:var(--ink3)}
+.tab.on{color:var(--ink);border-bottom-color:var(--accent)}
+.grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:28px;margin-top:22px;align-items:start}
+.pane{display:none}
+.pane.on{display:block}
+.mapcol{position:sticky;top:66px}
+.q{font-size:22px;font-weight:600;letter-spacing:-.02em;margin:0 0 4px}
+.q+p{margin:0 0 14px;color:var(--ink2);font-size:14px}
+.ctl{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:10px}
+.ctl .lab{font-size:11.5px;color:var(--ink3);letter-spacing:.1em;margin-right:4px;min-width:34px}
+.chip{border:1px solid var(--rule);background:none;padding:4px 10px;font-size:12.5px;border-radius:0;white-space:nowrap}
+.chip.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.chip i{font-style:normal;margin-right:3px}
+.chip em{font-style:normal;color:var(--ink3);margin-left:4px;font-family:var(--mono);font-size:11.5px}
+.chip.on em{color:inherit;opacity:.7}
+.search{display:flex;border:1px solid var(--ink);margin-bottom:12px;background:var(--panel)}
+.search input{flex:1;border:0;background:none;padding:10px 12px;font-size:14px;outline:none;min-width:0}
+.search select{border:0;border-left:1px solid var(--rule);background:none;padding:0 8px;font-size:13px}
+.count{font-size:12.5px;color:var(--ink2);margin:6px 0}
+.count b{font-family:var(--mono);color:var(--ink)}
+/* 목록 */
+.list{border-top:1px solid var(--ink);max-height:560px;overflow:auto}
+.row{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:8px;align-items:center;padding:7px 4px;border-bottom:1px solid var(--rule2);cursor:pointer;background:none;border-left:0;border-right:0;border-top:0;width:100%;text-align:left}
+.row:hover,.row.on{background:var(--panel)}
+.row .ic{font-size:19px;text-align:center}
+.row .n{font-size:13.5px;line-height:1.35}
+.row .n small{display:block;font-size:11.5px;color:var(--ink3)}
+.row .g{font-size:11px;color:var(--ink2);text-align:right;white-space:nowrap}
+.badge{display:inline-block;font-size:10.5px;padding:0 5px;border:1px solid var(--rule);color:var(--ink2);margin-left:4px;vertical-align:1px;white-space:nowrap}
+.badge.g4{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.badge.g3{border-color:var(--accent);color:var(--accent)}
+.badge.warn{border-color:var(--warn);color:var(--warn)}
+/* 표 */
+.tblwrap{overflow-x:auto;margin-top:8px}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th,td{padding:5px 7px;border-bottom:1px solid var(--rule2);text-align:right;white-space:nowrap}
+th{font-weight:500;color:var(--ink3);font-size:11.5px;border-bottom:1px solid var(--ink)}
+td:first-child,th:first-child{text-align:left}
+td.l,th.l{text-align:left;white-space:normal}
+tr.tot td{border-top:1px solid var(--ink);font-weight:600}
+details{margin-top:14px;border-top:1px solid var(--rule)}
+summary{cursor:pointer;padding:10px 0;font-size:13px;color:var(--ink2)}
+/* 지도 */
+.mapbox{position:relative;border:1px solid var(--rule);background:var(--panel);height:min(calc(100vh - 140px),760px);min-height:460px;overflow:hidden}
+#map{position:absolute;inset:0}
+.maplibregl-ctrl-attrib{font-size:10px}
+.mk{width:28px;height:28px;border-radius:50%;background:var(--mk);border:1.5px solid var(--ink3);display:flex;align-items:center;justify-content:center;
+  font-size:15px;line-height:1;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.22);position:relative;transition:transform .12s;user-select:none}
+.mk:hover{transform:scale(1.18);z-index:3}
+.mk.g4{width:36px;height:36px;font-size:19px;border:2.5px solid var(--accent)}
+.mk.g3{width:31px;height:31px;font-size:17px;border:2px solid var(--accent)}
+.mk.g2{border-color:var(--ink2)}
+.mk.g1{width:24px;height:24px;font-size:13px;border-style:dashed}
+.mk .ct{position:absolute;top:-6px;right:-8px;background:var(--ink);color:var(--paper);font:500 10px/1 var(--mono);padding:2px 4px;border-radius:7px}
+.mk .no{position:absolute;bottom:-7px;left:-7px;background:var(--accent);color:var(--paper);font:600 10px/1 var(--mono);padding:2px 4px;border-radius:7px}
+.mk.on{outline:3px solid var(--accent);outline-offset:2px}
+.mk.e-easy{box-shadow:0 0 0 3px var(--good)}
+.mk.e-mid{box-shadow:0 0 0 3px var(--warn)}
+.mk.e-hard{box-shadow:0 0 0 3px var(--bad)}
+.mk.dim{opacity:.32}
+.mk.pop{animation:pop .45s ease-out}
+@keyframes pop{0%{transform:scale(.2)}70%{transform:scale(1.25)}100%{transform:scale(1)}}
+.legend{position:absolute;left:8px;bottom:8px;z-index:2;background:var(--bar);border:1px solid var(--rule);padding:6px 9px;font-size:11.5px;color:var(--ink2);max-width:calc(100% - 16px)}
+.legend span{display:inline-flex;align-items:center;gap:4px;margin-right:10px;white-space:nowrap}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--mk);border:1.5px solid var(--ink3)}
+.maptools{position:absolute;right:8px;top:8px;z-index:2;display:flex;gap:4px}
+.maptools button{background:var(--bar);border:1px solid var(--rule);padding:4px 9px;font-size:12px}
+/* 상세 */
+.sheet{position:absolute;top:0;right:0;bottom:0;width:min(400px,100%);background:var(--paper);border-left:1px solid var(--ink);z-index:5;overflow:auto;
+  transform:translateX(102%);transition:transform .22s ease}
+.sheet.on{transform:none}
+.sheet .x{position:sticky;top:0;display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--bar);border-bottom:1px solid var(--rule);z-index:2}
+.sheet .x button{border:1px solid var(--rule);background:none;padding:2px 9px}
+.sheet .bd{padding:12px 16px 20px}
+.sheet .photo{width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--panel);display:block;border:1px solid var(--rule)}
+.sheet .noimg{aspect-ratio:4/3;border:1px dashed var(--ink3);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--ink3);font-size:12.5px;text-align:center;padding:16px}
+.sheet .noimg b{font-size:48px;line-height:1.2}
+.thumbs{display:flex;gap:4px;margin-top:4px}
+.thumbs img{width:56px;height:42px;object-fit:cover;cursor:pointer;border:1px solid var(--rule);opacity:.75}
+.thumbs img.on{opacity:1;outline:2px solid var(--accent)}
+.sheet h4{font-size:21px;line-height:1.25;margin:12px 0 2px;letter-spacing:-.02em}
+.sheet .hj{color:var(--ink3);font-size:13px}
+.kv{display:grid;grid-template-columns:86px minmax(0,1fr);gap:0;margin-top:12px;border-top:1px solid var(--ink);font-size:12.5px}
+.kv div{padding:5px 0;border-bottom:1px solid var(--rule2)}
+.kv div:nth-child(odd){color:var(--ink3)}
+.desc{font-size:13px;color:var(--ink2);margin-top:12px;white-space:pre-line}
+.desc.clip{max-height:9.5em;overflow:hidden;-webkit-mask-image:linear-gradient(#000 60%,transparent)}
+.more{border:0;background:none;color:var(--accent);padding:4px 0;font-size:12.5px}
+.acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.btn{border:1px solid var(--ink);background:var(--ink);color:var(--paper);padding:7px 12px;font-size:13px;text-decoration:none;display:inline-block}
+.btn.ghost{background:none;color:var(--ink)}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.access{margin-top:14px;border:1px solid var(--rule);padding:10px 12px;font-size:12.5px}
+.access b{font-weight:600}
+.ease{display:inline-block;padding:1px 7px;font-size:11.5px;color:#fff;margin-left:4px}
+.ease.easy{background:var(--good)}.ease.mid{background:var(--warn)}.ease.hard{background:var(--bad)}.ease.na{background:var(--ink3)}
+:root[data-theme="dark"] .ease{color:#111}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .ease{color:#111}}
+/* 지층 */
+.strata{border-top:1px solid var(--ink);margin:6px 0 14px}
+.stratum{display:grid;grid-template-columns:132px minmax(0,1fr) 36px;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid var(--rule2);cursor:pointer;
+  background:none;border-left:0;border-right:0;border-top:0;width:100%;text-align:left}
+.stratum .n{font-size:13px}
+.stratum .lay{height:16px;background:repeating-linear-gradient(90deg,rgba(var(--accent-rgb),.85) 0 6px,rgba(var(--accent-rgb),.6) 6px 7px)}
+.stratum .v{font-family:var(--mono);font-size:12.5px;text-align:right}
+.stratum.past .lay{opacity:1}.stratum.future .lay{opacity:.18}
+.stratum:hover .n{color:var(--accent)}
+.travel{border:1px solid var(--ink);padding:12px 14px;margin:8px 0 12px;background:var(--panel)}
+.travel .yr{font:500 34px/1.1 var(--mono);letter-spacing:-.02em}
+.travel .yr small{font:400 14px "IBM Plex Sans KR",sans-serif;color:var(--ink2);margin-left:8px}
+.travel input{width:100%;margin:10px 0 4px;accent-color:var(--accent)}
+.travel .row2{display:flex;justify-content:space-between;font-size:11px;color:var(--ink3)}
+.mile{list-style:none;padding:0;margin:0;border-top:1px solid var(--rule)}
+.mile li{display:grid;grid-template-columns:64px 26px minmax(0,1fr);gap:6px;padding:5px 0;border-bottom:1px solid var(--rule2);font-size:12.5px;cursor:pointer}
+.mile li .y{font-family:var(--mono);color:var(--accent)}
+.mile li.future{color:var(--ink3)}
+/* 코스 */
+.courses{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border-left:1px solid var(--rule);border-top:1px solid var(--rule);margin-bottom:14px}
+.course{border:0;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);background:none;padding:10px 12px;text-align:left}
+.course b{display:block;font-size:14.5px}
+.course span{font-size:11.5px;color:var(--ink3)}
+.course i{font-style:normal;font-size:20px;float:right}
+.course.on{background:var(--panel);box-shadow:inset 0 0 0 2px var(--accent)}
+.story p{font-size:13.5px;color:var(--ink2);margin:0 0 9px}
+.stops{counter-reset:s;list-style:none;padding:0;margin:8px 0 0;border-top:1px solid var(--ink)}
+.stops li{display:grid;grid-template-columns:26px 26px minmax(0,1fr) auto;gap:6px;align-items:center;padding:6px 0;border-bottom:1px solid var(--rule2);font-size:13px;cursor:pointer}
+.stops li .k{font:600 11px/1 var(--mono);color:var(--accent)}
+.stops li .u{font-size:11.5px;color:var(--ink3)}
+/* 달력 */
+.months{display:grid;grid-template-columns:repeat(13,minmax(0,1fr));border-top:1px solid var(--ink);border-left:1px solid var(--rule);margin-bottom:12px}
+.mo{border:0;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);background:none;padding:7px 0 5px;font-size:12.5px;display:flex;flex-direction:column;align-items:center;gap:3px}
+.mo i{display:block;width:70%;height:4px;background:rgba(var(--accent-rgb),.15)}
+.mo i.h1{background:rgba(var(--accent-rgb),.45)}.mo i.h2{background:rgba(var(--accent-rgb),.75)}.mo i.h3{background:var(--accent)}
+.mo.on{background:var(--ink);color:var(--paper)}
+.mo.now::after{content:"지금";font-size:9.5px;color:var(--accent)}
+.mo.on.now::after{color:var(--paper)}
+.ev{border-top:1px solid var(--rule);padding:10px 0}
+.ev b{font-size:14.5px}
+.ev .rel{font-size:10.5px;border:1px dashed var(--ink3);color:var(--ink3);padding:0 5px;margin-left:6px;vertical-align:2px}
+.ev p{margin:4px 0 6px;font-size:13px;color:var(--ink2)}
+.ev .its{display:flex;flex-wrap:wrap;gap:4px}
+/* 막대 */
+.bars{margin:6px 0 12px;border-top:1px solid var(--rule)}
+.br{display:grid;grid-template-columns:150px minmax(0,1fr) 70px;gap:10px;align-items:center;padding:4px 0;font-size:12.5px;border-bottom:1px solid var(--rule2)}
+.br .trk{height:12px;position:relative;display:flex}
+.br .trk i{display:block;height:100%}
+.br .v{font-family:var(--mono);text-align:right}
+.facts{list-style:none;padding:0;margin:8px 0 12px;border-top:1px solid var(--ink)}
+.facts li{padding:8px 0;border-bottom:1px solid var(--rule2);font-size:13px;color:var(--ink2)}
+.facts li b{color:var(--ink)}
+.facts li .big{font:500 22px/1 var(--mono);color:var(--accent);margin-right:8px}
+.chart svg{display:block;width:100%;height:auto}
+.chart text{font-family:var(--mono);font-size:10px;fill:var(--ink3)}
+.chart .lbl{font-family:"IBM Plex Sans KR",sans-serif;font-size:11px;fill:var(--ink2)}
+.keys{display:flex;flex-wrap:wrap;gap:10px;font-size:11.5px;color:var(--ink2);margin:4px 0}
+.keys span::before{content:"";display:inline-block;width:10px;height:10px;margin-right:4px;vertical-align:-1px;background:var(--c)}
+.note{border:1px dashed var(--ink3);padding:10px 12px;font-size:12.5px;color:var(--ink2);margin:12px 0}
+.note b{color:var(--ink)}
+.check{columns:2;font-size:12.5px;color:var(--ink2);padding-left:18px;margin:6px 0}
+.mini{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}
+/* 3D */
+.m3d{position:fixed;inset:0;z-index:100;background:#0b0b0a;display:none}
+.m3d.on{display:block}
+#map3d{position:absolute;inset:0}
+.m3d .cap{position:absolute;left:14px;top:14px;z-index:2;max-width:min(440px,calc(100% - 28px));background:rgba(15,15,14,.82);color:#EDECE8;padding:12px 14px;font-size:12.5px;line-height:1.5}
+.m3d .cap b{font-size:17px;display:block;margin-bottom:2px}
+.m3d .cap a{color:#8EA0F2}
+.m3d .ctrl{position:absolute;right:14px;top:14px;z-index:2;display:grid;grid-template-columns:repeat(3,40px);gap:4px}
+.m3d .ctrl button{height:36px;background:rgba(15,15,14,.82);color:#EDECE8;border:1px solid #EDECE840;font-size:14px}
+.m3d .ctrl button.wide{grid-column:span 3;font-size:12.5px}
+.m3d .close{position:absolute;right:14px;bottom:24px;z-index:2;background:#EDECE8;color:#111;border:0;padding:9px 16px;font-size:13px;font-weight:600}
+.m3d .pin{font-size:30px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.6))}
+.m3d .stat{position:absolute;left:14px;bottom:24px;z-index:2;color:#EDECE8;font-size:11.5px;background:rgba(15,15,14,.7);padding:5px 9px}
+.method{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 32px;font-size:13px;color:var(--ink2)}
+.method p{margin:0 0 10px}
+.foot{margin-top:40px;border-top:1px solid var(--ink);padding-top:14px;font-size:12.5px;color:var(--ink2);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.foot .aside{font-style:italic;color:var(--ink3);margin:0 0 8px;max-width:640px}
+.foot p{margin:0 0 4px}
+.hits img{height:20px;display:block}
+.credit{display:grid;grid-template-columns:48px minmax(0,1fr);gap:8px 14px;margin:0;font-size:13px}
+.credit dt{color:var(--ink3)}
+.credit dd{margin:0}
+.credit dd b{display:block;font-weight:600;color:var(--ink)}
+.credit dd span{display:block;color:var(--ink2);margin-bottom:6px}
+.credit a{color:var(--accent)}
+@media (max-width:1000px){
+  .wrap{padding:0 16px 40px}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kpi:nth-child(2){border-right:0}
+  .kpi:nth-child(3){padding-left:0}
+  .kpi:nth-child(n+3){border-top:1px solid var(--rule)}
+  .grid{grid-template-columns:minmax(0,1fr)}
+  .mapcol{position:relative;top:0;order:-1}
+  .mapbox{height:62vh;min-height:360px}
+  .method{grid-template-columns:minmax(0,1fr)}
+  .tab{padding:10px 10px 8px;font-size:13px}
+  .tab small{display:none}
+  .list{max-height:none}
+  .sheet{position:fixed;top:auto;left:0;right:0;bottom:0;width:100%;height:78vh;border-left:0;border-top:1px solid var(--ink);transform:translateY(102%);z-index:60}
+  .check{columns:1}
+}
+@media (max-width:560px){.courses{grid-template-columns:minmax(0,1fr)}.months{grid-template-columns:repeat(7,minmax(0,1fr))}.br{grid-template-columns:96px minmax(0,1fr) 56px}.stratum{grid-template-columns:96px minmax(0,1fr) 30px}}
+
+/* ── 말랑 층: 대문 틀(종이색·남색·얇은 선) 위에 둥근 모양·파스텔·이모지 — 2026-10-22 사용자 요청 "귀엽고 말랑하게" */
+:root{--r:14px;--pill:999px;--soft:#FFFFFF;
+  --c-intang:#FDE2E4;--c-nature:#DDF3E4;--c-modern:#E8E2F8;--c-buddha:#FFF0D2;--c-fort:#DCEBFA;--c-hall:#F4E6D6;--c-gate:#FCE0D2;--c-tomb:#ECEBE4;--c-record:#F7EEC9;--c-house:#DFF2EC}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--soft:#1C1C1A;
+  --c-intang:#4A2A30;--c-nature:#203A2B;--c-modern:#332B4A;--c-buddha:#4A3A1C;--c-fort:#1F3248;--c-hall:#43362A;--c-gate:#4A2D22;--c-tomb:#33332F;--c-record:#46401F;--c-house:#1F3D34}}
+:root[data-theme="dark"]{--soft:#1C1C1A;--c-intang:#4A2A30;--c-nature:#203A2B;--c-modern:#332B4A;--c-buddha:#4A3A1C;--c-fort:#1F3248;--c-hall:#43362A;--c-gate:#4A2D22;--c-tomb:#33332F;--c-record:#46401F;--c-house:#1F3D34}
+.q,h3,.course b,.sheet h4,.ev b,.tab,.kpi .l,.travel .yr small,.pe em{font-family:"Jua","IBM Plex Sans KR",sans-serif;font-weight:400;letter-spacing:0}
+.q{font-size:24px}.tab{font-size:15px}.tab small{font-family:"IBM Plex Sans KR",sans-serif}.kpi .l{font-size:14px;color:var(--ink)}
+.tab .te{font-style:normal;margin-right:5px;display:inline-block;transition:transform .2s}
+.tab:hover .te,.tab.on .te{transform:translateY(-2px) rotate(-8deg) scale(1.15)}
+.tab.on{border-bottom-width:4px}
+.chip,.btn,.maptools button,.theme-toggle,.theme-toggle button,.search,.sheet .x button,.mo,.m3d .ctrl button,.m3d .close{border-radius:var(--pill)}
+.chip{transition:transform .15s,background .15s}.chip:hover{transform:translateY(-1px)}
+.chip:not(.on):hover{background:var(--soft)}
+.search{padding:0 6px 0 4px;box-shadow:0 2px 0 var(--ink)}
+.search select{border-left:0}
+.mapbox{border-radius:22px;border:1.5px solid var(--ink)}
+.legend,.maptools button{border-radius:12px}
+.sheet{border-radius:22px 0 0 22px}
+.sheet .photo,.sheet .noimg{border-radius:16px}
+.sheet .noimg{background:var(--soft)}
+.sheet .noimg b{font-size:64px;animation:bob 2.6s ease-in-out infinite}
+.thumbs img{border-radius:8px}
+.access,.note,.travel,.course,.ev{border-radius:var(--r)}
+.access{background:var(--soft)}
+.travel{border-width:1.5px;box-shadow:0 3px 0 var(--ink)}
+.courses{border:0;gap:8px}
+.course{border:1.5px solid var(--rule);background:var(--soft);transition:transform .15s}
+.course:hover{transform:translateY(-2px)}
+.course i{font-size:26px}
+.course.on{box-shadow:0 3px 0 var(--accent);border-color:var(--accent)}
+.months{border:0;gap:4px}
+.mo{border:1px solid var(--rule)}
+.mo i{border-radius:4px}
+.badge{border-radius:var(--pill);padding:0 7px}
+.ease{border-radius:var(--pill)}
+.row{border-radius:12px;border-bottom:0;margin:1px 0}
+.list{border-top:0;padding-top:4px}
+.br .trk{border-radius:var(--pill);overflow:hidden;background:var(--rule2)}
+.stratum .lay{border-radius:var(--pill);height:18px}
+.lay.e-living{background:#F7B7C3}.lay.e-modern{background:#C7B8F0}.lay.e-joseon{background:#F3C98B}.lay.e-goryeo{background:#9FD3B6}
+.lay.e-unified{background:#9CC4EE}.lay.e-three{background:#B9A58C}.lay.e-pre{background:#8C8577}
+.kpi .v{color:var(--accent)}
+/* 이모지 마커: 분류마다 파스텔 바탕, 등급은 크기·테두리 */
+.mk{background:var(--pc,var(--soft));border-color:#FFFFFF;border-width:2px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.mk:hover{transform:scale(1.25) rotate(-6deg)}
+.mk.g4{border-color:var(--accent);border-width:3px}.mk.g3{border-color:var(--accent)}
+.mk.g1{border-color:#FFFFFF;border-style:solid;opacity:.95}
+.c-intang{--pc:var(--c-intang)}.c-nature{--pc:var(--c-nature)}.c-modern{--pc:var(--c-modern)}.c-buddha{--pc:var(--c-buddha)}.c-fort{--pc:var(--c-fort)}
+.c-hall{--pc:var(--c-hall)}.c-gate{--pc:var(--c-gate)}.c-tomb{--pc:var(--c-tomb)}.c-record{--pc:var(--c-record)}.c-house{--pc:var(--c-house)}
+.mk .ct{border-radius:var(--pill);border:1.5px solid var(--paper)}
+.mk .no{border-radius:var(--pill)}
+.row .ic{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;background:var(--soft)}
+/* 머리 이모지 행진 */
+.parade{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
+.pe{border:1.5px solid var(--rule);background:var(--pc);border-radius:var(--pill);padding:4px 12px 4px 8px;font-size:20px;line-height:1.2;display:inline-flex;align-items:center;gap:6px;
+  animation:bob 3s ease-in-out infinite;transition:transform .15s}
+.pe em{font-style:normal;font-size:13px;color:var(--ink)}
+.pe:hover{transform:scale(1.08) rotate(-3deg);animation-play-state:paused}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@media (prefers-reduced-motion: reduce){.pe,.sheet .noimg b,.mk.pop{animation:none}}
+h2{border-bottom-width:1.5px}
+@media (max-width:1000px){.sheet{border-radius:22px 22px 0 0}}
+</style></head>
+<body>
+<script src="https://ysong86.github.io/nav.js" data-site="heritage" defer></script>
+<div class="wrap">
+<header class="mast"><div class="brand"><b>세종 국가유산 상황판</b><span>HERITAGE · SEJONG</span></div>
+<div class="theme-toggle" role="group" aria-label="화면 테마"><button type="button" data-t="auto">자동</button><button type="button" data-t="light">밝게</button><button type="button" data-t="dark">어둡게</button></div></header>
+<section class="hero"><div class="kick" id="kick">문화유산 · 기준 2026.1.1 세종특별자치시 국가유산 지정(등록) 현황</div>
+<h1>세종의 시간은 <em>어디에 남아 있나</em></h1>
+<div class="parade" id="parade" aria-hidden="true"></div>
+<p class="lede">세종시가 지정·등록해 관리하는 국가유산 137건(국가지정·시지정·문화유산자료·등록·향토유산)을 한 장의 지도에 올렸습니다.
+이모지로 종류를 나누고, 시대의 지층·이야기 코스·세시 달력으로 엮어 읽고, 개발 속 유산의 자리와 누구나 누릴 수 있는지(향유권·물리적 접근)까지 살펴봅니다. 유산을 누르면 사진·설명과 3D 보기가 열립니다.</p>
+<div class="kpis" id="kpis"></div></section>
+
+<nav class="tabs" role="tablist">
+<button type="button" class="tab" data-tab="find"><i class="te">🔍</i>유산 찾기<small>지정·관리 현황 검색</small></button>
+<button type="button" class="tab" data-tab="era"><i class="te">⏳</i>시대의 지층<small>678년부터 지금까지</small></button>
+<button type="button" class="tab" data-tab="course"><i class="te">🗺️</i>이야기 코스<small>엮어서 보는 유산</small></button>
+<button type="button" class="tab" data-tab="cal"><i class="te">🗓️</i>세시 달력<small>언제 가면 좋은가</small></button>
+<button type="button" class="tab" data-tab="dev"><i class="te">🏗️</i>개발과 유산<small>지정 연표·신도시 속 유산</small></button>
+<button type="button" class="tab" data-tab="acc"><i class="te">🤝</i>누구나 누리는 유산<small>향유권·물리적 접근</small></button>
+</nav>
+
+<div class="grid"><div class="panes">
+<section class="pane" id="pane-find">
+  <p class="q">🔍 무엇이, 어디에, 몇 건인가</p><p>이름·한자·주소로 찾고 등급·분류·읍면동으로 좁힙니다. 목록이나 지도의 이모지를 누르면 지정 정보가 열립니다.</p>
+  <div class="search"><input id="q" type="search" placeholder="예: 비암사, 정려, 은행나무, 부강면, 碑巖寺" aria-label="유산 검색"><select id="unit" aria-label="읍면동"></select></div>
+  <div class="ctl" id="gradeChips"><span class="lab">등급</span></div>
+  <div class="ctl" id="catChips"><span class="lab">분류</span></div>
+  <div class="count" id="count"></div>
+  <div class="list" id="list"></div>
+  <details><summary>지정 현황 표 — 등급 × 종목 (시 현황표 2026.1.1)</summary><div class="tblwrap" id="kindTable"></div></details>
+  <details><summary>읍면동별 현황 — 이 상황판이 좌표로 센 수</summary><div class="tblwrap" id="unitTable"></div></details>
+</section>
+
+<section class="pane" id="pane-era">
+  <p class="q">⏳ 세종의 역사 지층</p><p>막대를 움직이면 그 해까지 만들어진(또는 그 시대에 속한) 유산이 지도에 차례로 솟아납니다. 아래쪽이 오래된 층입니다.</p>
+  <div class="travel"><div class="yr" id="yr"></div>
+    <input type="range" id="yrSlider" min="0" max="100" value="100" aria-label="시간 여행">
+    <div class="row2"><span>선사</span><span>삼국</span><span>고려</span><span>조선</span><span>근대</span><span>지금</span></div>
+    <div class="ctl" style="margin:8px 0 0"><button type="button" class="chip" id="play">▶️ 처음부터 재생</button><button type="button" class="chip" id="yrAll">✨ 모두 보기</button></div></div>
+  <div class="strata" id="strata"></div>
+  <h3>📅 해가 적힌 유산</h3>
+  <ul class="mile" id="mile"></ul>
+  <p class="src">시대는 시 현황표의 '시대' 칸과 국가유산청 설명을 따릅니다. 향토유산은 시대가 적혀 있지 않아 정려·사당·묘는 조선, 고인돌·입석은 선사로 <span class="est">(추정)</span>했고 나머지는 '시대 미상'으로 두었습니다. 해가 없는 유산은 그 시대 가운데에 놓았습니다.</p>
+</section>
+
+<section class="pane" id="pane-course">
+  <p class="q">🗺️ 유산을 엮어 읽는 여섯 갈래</p><p>흩어진 점을 이야기로 이으면 고장의 내력이 보입니다. 코스를 고르면 지도가 그 유산만 보여 줍니다.</p>
+  <div class="courses" id="courses"></div>
+  <div class="story" id="story"></div>
+</section>
+
+<section class="pane" id="pane-cal">
+  <p class="q">🗓️ 언제 가면 무엇을 만나나</p><p>무형·민속유산의 세시 행사와 철 따라 달라지는 자연유산을 열두 달에 놓았습니다. 진한 칸일수록 볼거리가 많은 달입니다.</p>
+  <div class="months" id="months"></div>
+  <div id="events"></div>
+  <p class="src">시기는 전통적으로 알려진 철을 따른 것이고 실제 행사 날짜는 해마다 다릅니다. '관련 행사'는 지정유산은 아니지만 그 유산이 있는 자리에서 열리는 행사입니다.</p>
+</section>
+
+<section class="pane" id="pane-dev">
+  <p class="q">🏗️ 개발과 유산</p><p>언제 지정됐고, 행정중심복합도시(행복도시)를 짓는 동안 유산은 어디로 갔나.</p>
+  <h3>📈 지정 연표 — 해마다 지정(등록)된 건수</h3>
+  <div class="chart" id="timeline"></div>
+  <div class="keys" id="tlKeys"></div>
+  <ul class="facts" id="devFacts"></ul>
+  <h3>🏙️ 행복도시(동 지역)와 읍면</h3>
+  <div class="bars" id="urbanBars"></div>
+  <div id="urbanList"></div>
+</section>
+
+<section class="pane" id="pane-acc">
+  <p class="q">🤝 누구나 누릴 수 있는가</p><p>휠체어·유모차 이용자, 고령자, 차 없는 사람에게 세종의 유산은 얼마나 가까운가. 지도의 테두리 색이 걷기 쉬움 정도입니다 <span class="est">(연구진 추정)</span>.</p>
+  <div class="ctl" id="easeChips"><span class="lab">보기</span></div>
+  <h3>♿ 걷기 쉬움 — 등급별</h3>
+  <div class="bars" id="easeBars"></div>
+  <div class="keys"><span style="--c:var(--good)">쉬움</span><span style="--c:var(--warn)">보통</span><span style="--c:var(--bad)">어려움</span><span style="--c:var(--ink3)">판단 안 함(행사·대략 위치)</span></div>
+  <p class="src">어려움 = 산지 지번(산○○)이거나 차가 들어가는 길에서 400m 넘게 떨어졌거나 길보다 25m 넘게 높은 곳. 보통 = 길에서 120m 넘게 또는 8m 넘게 높거나, 버스정류장이 1km 밖. 경사로·화장실·점자 안내 같은 편의시설은 공개 자료가 없어 넣지 못했습니다.</p>
+  <h3>👀 어떻게 만나는가 — 관람 형태</h3>
+  <div class="bars" id="viewBars"></div>
+  <h3>🚌 차 없이 가기</h3>
+  <ul class="facts" id="busFacts"></ul>
+  <h3>📷 정보로 만나기 — 사진·설명이 공개된 유산</h3>
+  <div class="bars" id="infoBars"></div>
+  <h3>🌫️ 현장에서도 온라인에서도 닿기 어려운 유산</h3>
+  <p class="src" style="margin-top:0">걷기 '어려움'이면서 국가유산청 사진·설명도 없는 곳. 3D 보기로 지형을 먼저 볼 수 있습니다.</p>
+  <div class="mini" id="blind"></div>
+  <div class="note"><b>📝 현장 조사가 필요한 것</b> — 향유권을 제대로 재려면 공개 자료에 없는 아래 항목을 유산마다 확인해야 합니다.
+  <ul class="check"><li>입구 단차·경사로·노면(흙·자갈·계단)</li><li>장애인 주차·화장실</li><li>점자·촉각 안내판, 큰 글씨 안내</li><li>수어·음성 해설(QR)</li><li>쉼터·그늘·벤치</li><li>개방 시간·사전 연락 필요 여부</li><li>다국어 안내</li><li>야간 조명·안전</li></ul></div>
+</section>
+</div>
+
+<div class="mapcol"><div class="mapbox"><div id="map"></div>
+<div class="maptools"><button type="button" id="fit">🧭 세종 전체</button></div>
+<div class="legend" id="legend"></div>
+<aside class="sheet" id="sheet" aria-live="polite"><div class="x"><span id="sheetKick" class="src" style="margin:0"></span><button type="button" id="sheetClose" aria-label="닫기">닫기 ✕</button></div><div class="bd" id="sheetBody"></div></aside>
+</div><div class="src" id="mapSrc">테두리가 굵고 남색일수록 높은 등급(국가지정 &gt; 시지정 &gt; 문화유산자료·등록 &gt; 향토). 숫자는 같은 자리에 있는 유산 수. 위치가 '(대략)'인 것은 리·동 단위입니다.</div></div></div>
+
+<h2><b>자료와 방법</b>출처·기준일과 가정</h2>
+<div class="method"><div>
+<p><b>목록.</b> 세종특별자치시 「국가유산 지정(등록) 현황」(2026.1.1. 기준, HWP) 137건 — 국가지정 9, 시지정 36, 시문화유산자료 16, 등록 3, 향토유산 73. 표의 이름·지정일·시대·수량·소재지를 그대로 읽었습니다.</p>
+<p><b>사진·설명·좌표.</b> 국가유산청 국가유산 검색 Open API(세종 64건, 지정 해제 제외). 향토유산과 국가무형유산(가야금산조및병창, 전국 단위 지정)은 이 목록에 없어 사진·설명이 없습니다. 국가유산청 목록에는 세종 소재로 「대승기신론소」(보물)도 있으나 시 현황표에 없어 넣지 않았습니다.</p>
+<p><b>위치.</b> 국가유산청 좌표가 있으면 그것을, 없으면 시 표 소재지를 브이월드 주소 검색으로 바꿨습니다. 번지가 안 잡히면 같은 리의 다른 번지·같은 리 유산 자리·지금 동 중심을 써서 <span class="est">(대략)</span>으로 표시했습니다. 해체 보관 중인 3건은 지도에 없습니다.</p>
+<p><b>분류·아이콘.</b> 종목과 이름의 낱말로 나눈 연구진 분류입니다(불교 유산·산성·정려 등). 국가유산의 공식 분류는 상세 카드의 '국가유산청 분류'에 있습니다.</p>
+</div><div>
+<p><b>걷기 쉬움 <span class="est">(연구진 추정)</span>.</b> 차가 들어가는 길은 OpenStreetMap 도로(마을 안길·농로 포함, 임도·고속도로 제외, <span id="osmAt"></span> 기준), 고도는 AWS Terrain Tiles(약 30m 격자)로 유산 자리와 가장 가까운 길의 높이 차를 쟀습니다. 버스정류장은 국토교통부 TAGO 정류소(<span id="nStops"></span>곳), 거리는 모두 직선입니다.</p>
+<p><b>3D 보기.</b> 유산 자리를 위성사진(브이월드, 없으면 Esri)·지형(AWS Terrain Tiles)·건물 높이(브이월드 GIS건물통합정보, 둘레 400m)로 다시 그린 입체 장면입니다. 유산 자체를 정밀 측량한 3D 모형은 아닙니다. 국가유산청 '국가유산 디지털 서비스'의 3D 에셋에서 세종 유산은 찾지 못했습니다.</p>
+<p><b>세시 달력·코스.</b> 행사 시기는 전통적으로 알려진 철이고 날짜는 해마다 확인해야 합니다. 코스 글은 공개된 해설을 바탕으로 연구진이 썼습니다.</p>
+<p class="src" id="builtAt"></p>
+</div></div>
+<!--__FOOT__-->
+</div>
+
+<div class="m3d" id="m3d" role="dialog" aria-label="3D 보기"><div id="map3d"></div>
+<div class="cap" id="cap3d"></div>
+<div class="ctrl"><button type="button" data-r="-30" title="왼쪽으로 돌리기">◀</button><button type="button" data-p="10" title="더 눕히기">▲</button><button type="button" data-r="30" title="오른쪽으로 돌리기">▶</button>
+<button type="button" data-z="1" title="가까이">＋</button><button type="button" data-p="-10" title="세우기">▼</button><button type="button" data-z="-1" title="멀리">－</button>
+<button type="button" class="wide" id="spin">🔄 한 바퀴 돌아보기</button><button type="button" class="wide" id="ex">⛰️ 지형 과장 1.5배</button></div>
+<div class="stat" id="stat3d"></div>
+<button type="button" class="close" id="close3d">👋 닫기</button></div>
+
+<script>window.__HER=/*__DATA__*/null;</script>
+<script>
+(function(){
+var D=window.__HER, $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var KX=89500, KY=111000;
+var S=D.sites, BY={}; S.forEach(function(o){BY[o.id]=o;});
+var CAT={}; D.cats.forEach(function(c){CAT[c[0]]={id:c[0],name:c[1],icon:c[2]};});
+var ERA={}; D.eras.forEach(function(e){ERA[e[0]]=e[1];});
+var GRADES=[["국가지정",4],["시지정",3],["문화유산자료",2],["등록",2],["향토",1]];
+var GL={}; GRADES.forEach(function(g){GL[g[0]]=g[1];});
+var GN={"국가지정":"국가지정","시지정":"시지정","문화유산자료":"시문화유산자료","등록":"등록문화유산","향토":"향토유산"};
+var VIEW={outdoor:"야외 상시",temple:"사찰 소장",event:"행사·시연",museum:"박물관 전시",office:"기관 소장",family:"문중 소장",stored:"해체 보관"};
+var EASE={easy:"쉬움",mid:"보통",hard:"어려움"};
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function n(v){return v==null?"—":Math.round(v).toLocaleString("ko-KR");}
+function pct(a,b){return b?Math.round(a/b*100):0;}
+function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
+function dark(){var t=document.documentElement.getAttribute("data-theme");return t?t==="dark":matchMedia("(prefers-color-scheme: dark)").matches;}
+function yearTxt(y){return y==null?"":(y<0?"기원전 "+(-y):y+"년");}
+function shortName(o){return o.name.replace(/^(세종시|세종)\s/,"");}
+
+// ── 테마
+(function(){var root=document.documentElement;
+  function paint(){var t=root.getAttribute("data-theme")||"auto";$$(".theme-toggle button").forEach(function(b){b.classList.toggle("on",b.dataset.t===t);});}
+  $$(".theme-toggle button").forEach(function(b){b.addEventListener("click",function(){
+    if(b.dataset.t==="auto"){root.removeAttribute("data-theme");try{localStorage.removeItem("heritage-theme");}catch(e){}}
+    else{root.setAttribute("data-theme",b.dataset.t);try{localStorage.setItem("heritage-theme",b.dataset.t);}catch(e){}}
+    paint();setBase();});});
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change",function(){setBase();});
+  paint();})();
+
+// ── 머리 숫자
+(function(){
+  var c=D.counts, nat=S.filter(function(o){return o.grade==="국가지정";}).length;
+  var withInfo=S.filter(function(o){return o.img||o.desc;}).length;
+  var recent=S.filter(function(o){return o.date&&o.date>="2024-01-01";});
+  var oldest=S.filter(function(o){return o.year_exact;}).sort(function(a,b){return a.year-b.year;})[0];
+  $("#kpis").innerHTML=[
+    ["🏛️ 지정·등록 유산",S.length,"건","국가지정 <b>"+nat+"</b> · 시지정 36 · 문화유산자료 16 · 등록 3 · 향토 73"],
+    ["⏳ 해가 적힌 가장 오래된 유산",oldest.year,"년","<b>"+esc(shortName(oldest))+"</b>"],
+    ["✨ 2024년 이후 새로 지정",recent.length,"건","한솔동 고분군(사적)·비암사 소조아미타여래좌상(보물) 등"],
+    ["📷 사진·설명이 공개된 유산",withInfo,"건","전체의 <b>"+pct(withInfo,S.length)+"%</b> — 향토유산 73건은 0건"]
+  ].map(function(k){return '<div class="kpi"><div class="l">'+k[0]+'</div><div class="v">'+k[1]+'<small>'+k[2]+'</small></div><div class="c">'+k[3]+'</div></div>';}).join("");
+  $("#osmAt").textContent=D.osm_at||""; $("#nStops").textContent=n(D.n_stops);
+  $("#builtAt").textContent="목록 기준 "+D.as_of+" · 국가유산청 수집 "+D.collected+" · 화면 "+D.built;
+})();
+
+// ── 이모지 행진(장식): 분류마다 하나씩, 누르면 그 분류로 찾기
+(function(){var p=$("#parade");if(!p)return;p.innerHTML=D.cats.map(function(c,i){var k=S.filter(function(o){return o.cat===c[0];}).length;
+  return k?'<button type="button" class="pe c-'+c[0]+'" data-c="'+c[0]+'" style="animation-delay:'+(i*0.18)+'s" title="'+c[1]+' '+k+'건">'+c[2]+'<em>'+c[1]+' '+k+'</em></button>':"";}).join("");
+  p.addEventListener("click",function(e){var b=e.target.closest("[data-c]");if(!b)return;state.cat=b.dataset.c;setTab("find");window.scrollTo({top:$(".tabs").offsetTop,behavior:"smooth"});});})();
+
+// ── 상태
+var state={tab:"find",q:"",grade:null,cat:null,unit:"",year:9999,course:null,month:(new Date()).getMonth()+1,ease:null,sel:null};
+
+// ── 지도
+var B=D.base, baseFail=false;
+function baseTiles(){var d=dark();if(B.vworld&&!baseFail)return [d?B.dark:B.light];return [d?B.fb_dark:B.fb_light];}
+var map=new maplibregl.Map({container:"map",attributionControl:{compact:true},
+  style:{version:8,sources:{base:{type:"raster",tiles:baseTiles(),tileSize:256,maxzoom:19,attribution:B.vworld?"© VWorld 국토교통부 · © CARTO · © OSM":"© CARTO · © OpenStreetMap"},
+    units:{type:"geojson",data:unitsGeo()},path:{type:"geojson",data:{type:"FeatureCollection",features:[]}}},
+    layers:[{id:"base",type:"raster",source:"base",paint:{"raster-opacity":0.85,"raster-saturation":-0.6}},
+      {id:"u-fill",type:"fill",source:"units",paint:{"fill-color":"#152484","fill-opacity":0}},
+      {id:"u-line",type:"line",source:"units",paint:{"line-color":"#55554f","line-width":0.8,"line-opacity":0.55}},
+      {id:"path",type:"line",source:"path",paint:{"line-color":"#152484","line-width":3,"line-dasharray":[2,1.4],"line-opacity":0.85}}]},
+  bounds:[[127.13,36.42],[127.40,36.74]],fitBoundsOptions:{padding:20},maxZoom:18.5,minZoom:9});
+map.addControl(new maplibregl.NavigationControl({showCompass:false}),"top-left");
+map.on("error",function(e){if(e&&e.sourceId==="base"&&B.vworld&&!baseFail){baseFail=true;setBase();}});
+function setBase(){if(!map.getSource("base"))return;try{map.getSource("base").setTiles(baseTiles());}catch(e){}
+  if(map.getLayer("u-line"))map.setPaintProperty("u-line","line-color",dark()?"#B2B1AC":"#55554f");
+  if(map.getLayer("path"))map.setPaintProperty("path","line-color",dark()?"#8EA0F2":"#152484");
+  if(map.getLayer("u-fill"))map.setPaintProperty("u-fill","fill-color",dark()?"#8EA0F2":"#152484");}
+function unitsGeo(){return {type:"FeatureCollection",features:D.units.units.map(function(u){
+  return {type:"Feature",properties:{name:u.name,dong:u.kind==="dong"?1:0},geometry:{type:"Polygon",coordinates:u.rings}};})};}
+$("#fit").addEventListener("click",function(){map.fitBounds([[127.13,36.42],[127.40,36.74]],{padding:20});});
+
+// 같은 자리 묶음
+var groups=[], GOF={};
+(function(){var key={};S.forEach(function(o){if(o.lon==null)return;var k=o.lon.toFixed(4)+","+o.lat.toFixed(4);
+  if(!key[k]){key[k]={ids:[],lon:o.lon,lat:o.lat};groups.push(key[k]);}key[k].ids.push(o.id);GOF[o.id]=key[k];});
+  groups.forEach(function(g){g.ids.sort(function(a,b){return GL[BY[b].grade]-GL[BY[a].grade];});
+    var el=document.createElement("div");el.className="mk";el.innerHTML='<span class="e"></span>';
+    el.addEventListener("click",function(ev){ev.stopPropagation();var vis=g.ids.filter(visible);openDetail(vis[0]||g.ids[0],vis.length>1?vis:null);});
+    el.addEventListener("mouseenter",function(){el.title=g.ids.filter(visible).map(function(i){return BY[i].name;}).join(" · ");});
+    g.el=el;g.mk=new maplibregl.Marker({element:el,anchor:"center"}).setLngLat([g.lon,g.lat]).addTo(map);});})();
+
+function matchFind(o){
+  if(state.grade&&o.grade!==state.grade)return false;
+  if(state.cat&&o.cat!==state.cat)return false;
+  if(state.unit&&o.unit!==state.unit)return false;
+  if(state.q){var q=state.q.replace(/\s/g,"").toLowerCase();var h=(o.name+o.hanja+o.addr+o.kind+(CAT[o.cat]||{}).name+o.unit+o.era_txt).replace(/\s/g,"").toLowerCase();if(h.indexOf(q)<0)return false;}
+  return true;}
+function visible(id){var o=BY[id];
+  switch(state.tab){
+    case "find":return matchFind(o);
+    case "era":return o.year!=null&&o.year<=state.year;
+    case "course":var c=courseOf(state.course);return !c||c.ids.indexOf(id)>=0;
+    case "cal":return calIds().indexOf(id)>=0;
+    case "acc":return !state.ease||(state.ease==="na"?!o.ease:o.ease===state.ease);
+    default:return true;}}
+var shown={};
+function paintMarkers(animate){
+  var cnum={};var c=state.tab==="course"?courseOf(state.course):null;if(c)c.ids.forEach(function(id,i){cnum[id]=i+1;});
+  groups.forEach(function(g){var vis=g.ids.filter(visible);var el=g.el;
+    var on=vis.length>0;el.style.display=on?"":"none";
+    if(!on){shown[g.ids[0]]=false;return;}
+    var top=BY[vis[0]];
+    el.className="mk c-"+top.cat+" g"+GL[top.grade]+(state.sel&&vis.indexOf(state.sel)>=0?" on":"");
+    if(state.tab==="acc"&&top.ease)el.classList.add("e-"+top.ease);
+    if(state.tab==="dev"&&!top.urban)el.classList.add("dim");
+    if(animate&&!shown[g.ids[0]])el.classList.add("pop");
+    shown[g.ids[0]]=true;
+    el.querySelector(".e").textContent=top.icon;
+    var ct=el.querySelector(".ct");if(vis.length>1){if(!ct){ct=document.createElement("span");ct.className="ct";el.appendChild(ct);}ct.textContent=vis.length;}else if(ct)ct.remove();
+    var no=el.querySelector(".no");var k=c&&c.line?Math.min.apply(null,vis.map(function(i){return cnum[i]||99;})):null;
+    if(k&&k<99){if(!no){no=document.createElement("span");no.className="no";el.appendChild(no);}no.textContent=k;}else if(no)no.remove();});
+  legend();}
+function legend(){var h="";
+  if(state.tab==="acc")h='<span><i style="box-shadow:0 0 0 3px var(--good)"></i>쉬움</span><span><i style="box-shadow:0 0 0 3px var(--warn)"></i>보통</span><span><i style="box-shadow:0 0 0 3px var(--bad)"></i>어려움</span><span><i></i>판단 안 함</span>';
+  else if(state.tab==="dev")h='<span><i style="border-color:var(--accent)"></i>행복도시(동) 안 — 진하게</span><span><i style="opacity:.35"></i>읍면 — 흐리게</span>';
+  else h='<span><i style="width:16px;height:16px;border:3px solid var(--accent);background:var(--c-buddha)"></i>국가지정</span><span><i style="border:2px solid var(--accent)"></i>시지정</span><span><i style="border-color:var(--ink2)"></i>자료·등록</span><span><i style="width:10px;height:10px;border-style:dashed"></i>향토</span>';
+  $("#legend").innerHTML=h;}
+
+// ── 상세 카드
+function openDetail(id,siblings){var o=BY[id];state.sel=id;
+  var imgs=(o.imgs&&o.imgs.length?o.imgs:(o.img?[o.img]:[]));
+  var ph=imgs.length?'<img class="photo" id="ph" src="'+esc(imgs[0])+'" alt="'+esc(o.name)+' 사진" referrerpolicy="no-referrer" onerror="this.outerHTML=\'<div class=noimg><b>'+o.icon+'</b>사진을 불러오지 못했습니다</div>\'">'
+     +(imgs.length>1?'<div class="thumbs">'+imgs.map(function(u,i){return '<img src="'+esc(u)+'" data-i="'+i+'" class="'+(i?"":"on")+'" alt="" referrerpolicy="no-referrer">';}).join("")+'</div>':"")
+     :'<div class="noimg"><b>'+o.icon+'</b>'+(o.grade==="향토"?"향토유산은 국가유산청 자료에 없어 공개된 사진·설명이 없습니다":"공개된 사진이 없습니다")+'</div>';
+  var kv=[["등급",GN[o.grade]+" · "+o.kind],["지정일",o.date||"—"],["시대",(o.era_txt||ERA[o.era])+(o.era_guess?" (추정)":"")],
+    ["수량·면적",o.quan||o.note.filter(function(t){return /\d/.test(t)&&!/^\(?\d{3,4}/.test(t);}).join(" ")||"—"],["소재지",o.addr+(o.unit?" · "+o.unit:"")],
+    ["소유·관리",[o.owner,o.admin].filter(Boolean).join(" / ")||"—"],["분류",(CAT[o.cat]||{}).name+(o.cls.length?" · 국가유산청: "+o.cls.join(" > "):"")]];
+  var acc='<div class="access"><b>🚶 찾아가기</b> '+(o.ease?'<span class="ease '+o.ease+'">걷기 '+EASE[o.ease]+'</span>':'<span class="ease na">판단 안 함</span>')+' <span class="est">(연구진 추정)</span><br>'
+    +esc(o.view_txt)+(o.lon!=null&&o.view!=="event"?'<br>버스정류장 '+n(o.stop_m)+'m('+esc(o.stop_nm)+') · 차 길에서 '+n(o.road_m)+'m'+(o.rise!=null?', 길보다 '+(o.rise>=0?o.rise+'m 높음':(-o.rise)+'m 낮음'):"")+(o.mount?' · 산지 지번':''):"")
+    +(o.approx?'<br><span class="est">위치는 대략('+esc(o.loc_by)+')</span>':"")+'</div>';
+  var sib=siblings&&siblings.length>1?'<div class="access"><b>📍 이 자리 유산 '+siblings.length+'건</b><div class="mini">'+siblings.map(function(i){return '<button type="button" class="chip'+(i===id?" on":"")+'" data-go="'+i+'"><i>'+BY[i].icon+'</i>'+esc(shortName(BY[i]))+'</button>';}).join("")+'</div></div>':"";
+  var desc=o.desc?'<div class="desc clip" id="desc">'+esc(o.desc)+'</div><button type="button" class="more" id="moreDesc">설명 더 보기</button><div class="src">설명·사진: 국가유산청(공공누리)</div>':"";
+  $("#sheetKick").textContent=(CAT[o.cat]||{}).name||"";
+  $("#sheetBody").innerHTML=ph+'<h4>'+o.icon+' '+esc(o.name)+'</h4><div class="hj">'+esc(o.hanja)+'</div>'
+    +'<div class="kv">'+kv.map(function(r){return '<div>'+r[0]+'</div><div>'+esc(r[1])+'</div>';}).join("")+'</div>'+sib+desc+acc
+    +'<div class="acts">'+(o.lon!=null?'<button type="button" class="btn" id="go3d">🧊 3D로 보기</button>':'<button type="button" class="btn" disabled>위치 없음</button>')
+    +(o.url?'<a class="btn ghost" href="'+esc(o.url)+'" target="_blank" rel="noopener">📖 국가유산포털</a>':"")
+    +(o.lon!=null?'<a class="btn ghost" href="https://map.kakao.com/link/map/'+encodeURIComponent(shortName(o))+','+o.lat+','+o.lon+'" target="_blank" rel="noopener">🧭 길찾기</a>':"")+'</div>';
+  $("#sheet").classList.add("on");
+  var md=$("#moreDesc");if(md)md.addEventListener("click",function(){$("#desc").classList.toggle("clip");md.textContent=$("#desc").classList.contains("clip")?"설명 더 보기":"접기";});
+  $$("#sheetBody [data-go]").forEach(function(b){b.addEventListener("click",function(){openDetail(b.dataset.go,siblings);});});
+  $$("#sheetBody .thumbs img").forEach(function(t){t.addEventListener("click",function(){$("#ph").src=t.src;$$("#sheetBody .thumbs img").forEach(function(x){x.classList.toggle("on",x===t);});});});
+  var g3=$("#go3d");if(g3)g3.addEventListener("click",function(){open3d(id);});
+  if(o.lon!=null){var z=Math.max(map.getZoom(),13.2);map.easeTo({center:[o.lon,o.lat],zoom:z,offset:[innerWidth>1000?-150:0,0],duration:600});}
+  $$(".row").forEach(function(r){r.classList.toggle("on",r.dataset.id===id);});
+  paintMarkers(false);}
+$("#sheetClose").addEventListener("click",function(){$("#sheet").classList.remove("on");state.sel=null;paintMarkers(false);});
+
+// ── ① 찾기
+(function(){
+  var units=[];S.forEach(function(o){if(o.unit&&units.indexOf(o.unit)<0)units.push(o.unit);});
+  var order=D.units.units.map(function(u){return u.name;});units.sort(function(a,b){return order.indexOf(a)-order.indexOf(b);});
+  $("#unit").innerHTML='<option value="">읍면동 전체</option>'+units.map(function(u){return '<option>'+u+'</option>';}).join("");
+  var gc=$("#gradeChips");GRADES.forEach(function(g){var b=document.createElement("button");b.type="button";b.className="chip";b.dataset.g=g[0];
+    b.innerHTML=GN[g[0]]+'<em>'+S.filter(function(o){return o.grade===g[0];}).length+'</em>';gc.appendChild(b);});
+  var cc=$("#catChips");D.cats.forEach(function(c){var k=S.filter(function(o){return o.cat===c[0];}).length;if(!k)return;var b=document.createElement("button");b.type="button";b.className="chip";b.dataset.c=c[0];
+    b.innerHTML='<i>'+c[2]+'</i>'+c[1]+'<em>'+k+'</em>';cc.appendChild(b);});
+  gc.addEventListener("click",function(e){var b=e.target.closest("[data-g]");if(!b)return;state.grade=state.grade===b.dataset.g?null:b.dataset.g;renderFind();});
+  cc.addEventListener("click",function(e){var b=e.target.closest("[data-c]");if(!b)return;state.cat=state.cat===b.dataset.c?null:b.dataset.c;renderFind();});
+  $("#q").addEventListener("input",function(){state.q=this.value.trim();renderFind();});
+  $("#unit").addEventListener("change",function(){state.unit=this.value;renderFind();
+    if(this.value){var pts=S.filter(function(o){return o.unit===state.unit&&o.lon!=null;});fitTo(pts);}});
+  // 표
+  var kinds=[];S.forEach(function(o){var k=o.grade+"|"+o.kind;if(kinds.indexOf(k)<0)kinds.push(k);});
+  var rows=kinds.map(function(k){var p=k.split("|");var L=S.filter(function(o){return o.grade===p[0]&&o.kind===p[1];});
+    return '<tr><td class="l">'+GN[p[0]]+'</td><td class="l">'+p[1]+'</td><td>'+L.length+'</td><td>'+L.filter(function(o){return o.img;}).length+'</td><td>'+L.filter(function(o){return o.lon!=null;}).length+'</td><td>'+(L.map(function(o){return o.date;}).sort().slice(-1)[0]||"")+'</td></tr>';});
+  $("#kindTable").innerHTML='<table><thead><tr><th class="l">등급</th><th class="l">종목</th><th>건수</th><th>사진</th><th>지도</th><th>최근 지정</th></tr></thead><tbody>'+rows.join("")
+    +'<tr class="tot"><td class="l">계</td><td></td><td>'+S.length+'</td><td>'+S.filter(function(o){return o.img;}).length+'</td><td>'+S.filter(function(o){return o.lon!=null;}).length+'</td><td></td></tr></tbody></table>';
+  var ur=units.map(function(u){var L=S.filter(function(o){return o.unit===u;});var c=function(g){return L.filter(function(o){return o.grade===g;}).length||"";};
+    return '<tr data-u="'+u+'"><td class="l">'+u+'</td><td>'+L.length+'</td><td>'+c("국가지정")+'</td><td>'+c("시지정")+'</td><td>'+c("문화유산자료")+'</td><td>'+c("등록")+'</td><td>'+c("향토")+'</td></tr>';});
+  $("#unitTable").innerHTML='<table><thead><tr><th class="l">읍면동</th><th>계</th><th>국가</th><th>시</th><th>자료</th><th>등록</th><th>향토</th></tr></thead><tbody>'+ur.join("")+'</tbody></table><p class="src">해체 보관·소재 불명확 '+S.filter(function(o){return !o.unit;}).length+'건은 빠짐. 시 표의 읍면동 집계와 1~2건 차이가 날 수 있습니다(동 경계 기준).</p>';
+  $$("#unitTable tr[data-u]").forEach(function(tr){tr.style.cursor="pointer";tr.addEventListener("click",function(){$("#unit").value=tr.dataset.u;$("#unit").dispatchEvent(new Event("change"));window.scrollTo({top:$(".tabs").offsetTop,behavior:"smooth"});});});
+})();
+function renderFind(){
+  $$("#gradeChips [data-g]").forEach(function(b){b.classList.toggle("on",b.dataset.g===state.grade);});
+  $$("#catChips [data-c]").forEach(function(b){b.classList.toggle("on",b.dataset.c===state.cat);});
+  var L=S.filter(matchFind).sort(function(a,b){return GL[b.grade]-GL[a.grade]||(a.date||"").localeCompare(b.date||"");});
+  $("#count").innerHTML='<b>'+L.length+'</b>건'+(L.length<S.length?' / 전체 '+S.length+'건':'')+(state.q||state.grade||state.cat||state.unit?' · <button type="button" class="more" id="clr">조건 지우기</button>':'');
+  $("#list").innerHTML=L.map(function(o){return '<button type="button" class="row" data-id="'+o.id+'"><span class="ic">'+o.icon+'</span><span class="n">'+esc(o.name)
+    +(o.stored?'<span class="badge warn">해체 보관</span>':'')+'<small>'+esc(o.unit||"")+' · '+esc(o.kind)+' · '+esc(o.date||"")+'</small></span><span class="g"><span class="badge g'+GL[o.grade]+'">'+GN[o.grade]+'</span></span></button>';}).join("")||'<p class="src">🫥 맞는 유산이 없습니다.</p>';
+  $$("#list .row").forEach(function(r){r.addEventListener("click",function(){var g=GOF[r.dataset.id];openDetail(r.dataset.id,g?g.ids.filter(visible):null);});});
+  var cl=$("#clr");if(cl)cl.addEventListener("click",function(){state.q=state.grade=state.cat=null;state.q="";state.unit="";$("#q").value="";$("#unit").value="";renderFind();});
+  paintMarkers(false);}
+function fitTo(L){if(!L.length)return;var b=new maplibregl.LngLatBounds();L.forEach(function(o){b.extend([o.lon,o.lat]);});
+  map.fitBounds(b,{padding:{top:60,bottom:60,left:50,right:innerWidth>1000&&$("#sheet").classList.contains("on")?430:50},maxZoom:14.5,duration:700});}
+
+// ── ② 시대
+var ERA_ORDER=["pre","three","unified","goryeo","joseon","modern","living"];
+var STOPS=[-1000,300,450,600,668,700,935,1100,1392,1500,1592,1650,1700,1750,1800,1850,1876,1900,1910,1926,1935,1945,2026];
+(function(){S.forEach(function(o){if(o.year!=null&&STOPS.indexOf(o.year)<0)STOPS.push(o.year);});STOPS.sort(function(a,b){return a-b;});
+  var sl=$("#yrSlider");sl.max=STOPS.length-1;sl.value=STOPS.length-1;
+  sl.addEventListener("input",function(){setYear(STOPS[+sl.value],true);});
+  var timer=null;$("#play").addEventListener("click",function(){if(timer){clearInterval(timer);timer=null;this.textContent="▶️ 처음부터 재생";return;}
+    var i=0;var self=this;self.textContent="⏸️ 멈춤";sl.value=0;setYear(STOPS[0],true);
+    timer=setInterval(function(){i++;if(i>=STOPS.length){clearInterval(timer);timer=null;self.textContent="▶️ 처음부터 재생";return;}sl.value=i;setYear(STOPS[i],true);},420);});
+  $("#yrAll").addEventListener("click",function(){sl.value=STOPS.length-1;setYear(2026,true);});
+  var mx=Math.max.apply(null,ERA_ORDER.map(function(e){return S.filter(function(o){return o.era===e;}).length;}));
+  $("#strata").innerHTML=ERA_ORDER.slice().reverse().map(function(e){var k=S.filter(function(o){return o.era===e;}).length;var g=S.filter(function(o){return o.era===e&&o.era_guess;}).length;
+    return '<button type="button" class="stratum" data-e="'+e+'"><span class="n">'+ERA[e]+'</span><span><span class="lay e-'+e+'" style="display:block;width:'+Math.max(2,k/mx*100)+'%"></span></span><span class="v">'+k+'</span></button>'
+      +(g?'':'');}).join("")+'<div class="src" style="margin:4px 0 0">시대 미상 '+S.filter(function(o){return o.era==="unknown";}).length+'건(향토 산성·불상 등)은 지층에서 뺐습니다. 조선 층 가운데 '+S.filter(function(o){return o.era==="joseon"&&o.era_guess;}).length+'건은 향토유산 <span class="est">(추정)</span>.</div>';
+  $$("#strata .stratum").forEach(function(b){b.addEventListener("click",function(){var e=b.dataset.e;var ys=S.filter(function(o){return o.era===e&&o.year!=null;}).map(function(o){return o.year;});
+    var y=Math.max.apply(null,ys);var i=STOPS.indexOf(y);sl.value=i;setYear(y,true);fitTo(S.filter(function(o){return o.era===e&&o.lon!=null;}));});});
+  var ex=S.filter(function(o){return o.year_exact||["three","unified","goryeo","pre"].indexOf(o.era)>=0;}).sort(function(a,b){return a.year-b.year;});
+  $("#mile").innerHTML=ex.map(function(o){return '<li data-id="'+o.id+'" data-y="'+o.year+'"><span class="y">'+(o.year_exact?yearTxt(o.year):ERA[o.era].replace("삼국·백제","삼국"))+'</span><span>'+o.icon+'</span><span>'+esc(shortName(o))+'</span></li>';}).join("");
+  $$("#mile li").forEach(function(li){li.addEventListener("click",function(){var o=BY[li.dataset.id];var i=STOPS.indexOf(o.year);sl.value=i;setYear(o.year,true);if(o.lon!=null)openDetail(o.id);});});
+})();
+function eraOfYear(y){if(y>=2026)return "지금";if(y<0)return "선사";if(y<=668)return "삼국";if(y<=935)return "통일신라";if(y<=1392)return "고려";if(y<1876)return "조선";return "근대";}
+function setYear(y,anim){state.year=y;var k=S.filter(function(o){return o.year!=null&&o.year<=y;}).length;
+  $("#yr").innerHTML=(y>=2026?"지금":yearTxt(y))+'<small>'+eraOfYear(y)+' · 지도에 '+k+'건</small>';
+  $$("#strata .stratum").forEach(function(b){var e=b.dataset.e;var ys=S.filter(function(o){return o.era===e&&o.year!=null;}).map(function(o){return o.year;});var mn=Math.min.apply(null,ys);b.classList.toggle("future",mn>y);});
+  $$("#mile li").forEach(function(li){li.classList.toggle("future",+li.dataset.y>y);});
+  if(state.tab==="era")paintMarkers(anim);}
+
+// ── ③ 코스
+function courseOf(id){return D.courses.filter(function(c){return c.id===id;})[0];}
+(function(){$("#courses").innerHTML=D.courses.map(function(c){return '<button type="button" class="course" data-c="'+c.id+'"><i>'+c.icon+'</i><b>'+esc(c.title)+'</b><span>'+esc(c.q)+' · '+c.ids.length+'곳</span></button>';}).join("");
+  $$("#courses .course").forEach(function(b){b.addEventListener("click",function(){setCourse(b.dataset.c);});});})();
+function setCourse(id){state.course=id;var c=courseOf(id);
+  $$("#courses .course").forEach(function(b){b.classList.toggle("on",b.dataset.c===id);});
+  $("#story").innerHTML='<h3>'+c.icon+' '+esc(c.title)+'</h3>'+c.body.map(function(p){return '<p>'+esc(p)+'</p>';}).join("")
+    +'<ol class="stops">'+c.ids.map(function(i,k){var o=BY[i];return '<li data-id="'+i+'"><span class="k">'+(c.line?k+1:"·")+'</span><span>'+o.icon+'</span><span>'+esc(shortName(o))+(o.stored?' <span class="badge warn">해체 보관</span>':'')+'</span><span class="u">'+esc(o.unit||"")+'</span></li>';}).join("")+'</ol>'
+    +(c.line?'<p class="src">점선은 순서대로 이은 직선입니다(실제 길 아님).</p>':'');
+  $$("#story li").forEach(function(li){li.addEventListener("click",function(){var g=GOF[li.dataset.id];openDetail(li.dataset.id,g?g.ids.filter(visible):null);});});
+  var pts=c.ids.map(function(i){return BY[i];}).filter(function(o){return o.lon!=null;});
+  var line=[];if(c.line){var seen={};pts.forEach(function(o){var k=o.lon.toFixed(4)+o.lat.toFixed(4);if(!seen[k]){seen[k]=1;line.push([o.lon,o.lat]);}});}
+  map.getSource("path").setData({type:"FeatureCollection",features:line.length>1?[{type:"Feature",geometry:{type:"LineString",coordinates:line},properties:{}}]:[]});
+  paintMarkers(true);fitTo(pts);}
+
+// ── ④ 달력
+function calIds(){var m=state.month;var ids=[];D.cal.forEach(function(e){if(e.m.indexOf(m)>=0||e.m.indexOf("all")>=0&&m==="all")e.ids.forEach(function(i){if(ids.indexOf(i)<0)ids.push(i);});});return ids;}
+(function(){var now=(new Date()).getMonth()+1;var ms=[1,2,3,4,5,6,7,8,9,10,11,12,"all"];
+  $("#months").innerHTML=ms.map(function(m){var k=D.cal.filter(function(e){return e.m.indexOf(m)>=0;}).length;
+    return '<button type="button" class="mo'+(m===now?" now":"")+'" data-m="'+m+'">'+(m==="all"?"연중":m+"월")+'<i class="h'+Math.min(3,k)+'"></i></button>';}).join("");
+  $$("#months .mo").forEach(function(b){b.addEventListener("click",function(){state.month=b.dataset.m==="all"?"all":+b.dataset.m;renderCal();});});})();
+function renderCal(){var m=state.month;$$("#months .mo").forEach(function(b){b.classList.toggle("on",String(m)===b.dataset.m);});
+  var E=D.cal.filter(function(e){return e.m.indexOf(m)>=0;});
+  $("#events").innerHTML=(E.length?E.map(function(e){return '<div class="ev"><b>'+esc(e.title)+'</b>'+(e.related?'<span class="rel">관련 행사</span>':'')+'<p>'+esc(e.txt)+'</p><div class="its">'
+    +e.ids.map(function(i){return '<button type="button" class="chip" data-id="'+i+'"><i>'+BY[i].icon+'</i>'+esc(shortName(BY[i]))+'</button>';}).join("")+'</div></div>';}).join("")
+    :'<p class="src">이 달에 알려진 세시 행사가 없습니다. 야외 유산은 언제나 볼 수 있습니다 — ① 유산 찾기.</p>');
+  $$("#events [data-id]").forEach(function(b){b.addEventListener("click",function(){openDetail(b.dataset.id);});});
+  if(state.tab==="cal"){paintMarkers(true);fitTo(calIds().map(function(i){return BY[i];}).filter(function(o){return o.lon!=null;}));}}
+
+// ── ⑤ 개발과 유산
+(function(){
+  var gs=[["국가지정","var(--accent)"],["시지정","rgba(var(--accent-rgb),.6)"],["문화유산자료","rgba(var(--accent-rgb),.35)"],["등록","var(--warn)"],["향토","var(--ink3)"]];
+  var yrs={};S.forEach(function(o){if(!o.date)return;var y=+o.date.slice(0,4);yrs[y]=yrs[y]||{};yrs[y][o.grade]=(yrs[y][o.grade]||0)+1;});
+  var y0=1968,y1=2025,W=640,H=200,pl=26,pb=22,bw=(W-pl-6)/(y1-y0+1);
+  var mx=0;for(var y in yrs){var t=0;for(var g in yrs[y])t+=yrs[y][g];mx=Math.max(mx,t);}
+  var sc=function(v){return (H-pb-14)*Math.sqrt(v)/Math.sqrt(mx);};
+  var bars="";for(var yy=y0;yy<=y1;yy++){var acc=0;var x=pl+(yy-y0)*bw;if(!yrs[yy])continue;var tot=0;
+    gs.forEach(function(g){var v=yrs[yy][g[0]]||0;if(!v)return;var h0=sc(acc),h1=sc(acc+v);acc+=v;bars+='<rect x="'+(x+0.5)+'" y="'+(H-pb-h1)+'" width="'+Math.max(1.5,bw-1.5)+'" height="'+(h1-h0)+'" fill="'+g[1]+'"><title>'+yy+'년 '+GN[g[0]]+' '+v+'건</title></rect>';});
+    bars+='<text x="'+(x+bw/2)+'" y="'+(H-pb-sc(acc)-3)+'" text-anchor="middle">'+acc+'</text>';}
+  var ax="";[1970,1980,1990,2000,2010,2020].forEach(function(t){ax+='<text x="'+(pl+(t-y0)*bw)+'" y="'+(H-6)+'">'+t+'</text>';});
+  var ann=[[2012.9,"세종시 출범(2012.7) 뒤 일괄 지정"],[2001.4,"향토유산 일괄"],[1978.9,"연화사 불비상 보물"]];
+  var an=ann.map(function(a){var x=pl+(a[0]-y0)*bw;return '<line x1="'+x+'" x2="'+x+'" y1="12" y2="'+(H-pb)+'" stroke="var(--ink3)" stroke-dasharray="2 3"/><text class="lbl" x="'+(x+4)+'" y="12">'+a[1]+'</text>';}).join("");
+  $("#timeline").innerHTML='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="연도별 지정 건수"><line x1="'+pl+'" x2="'+W+'" y1="'+(H-pb)+'" y2="'+(H-pb)+'" stroke="var(--ink)"/>'+an+bars+ax+'</svg>';
+  $("#tlKeys").innerHTML=gs.map(function(g){return '<span style="--c:'+g[1]+'">'+GN[g[0]]+'</span>';}).join("")+'<span style="color:var(--ink3)">막대 높이는 제곱근 눈금(2012·2001 일괄이 다른 해를 누르지 않게)</span>';
+  var y12=S.filter(function(o){return o.date==="2012-12-31";}).length;
+  var stored=S.filter(function(o){return o.stored;});
+  var urban=S.filter(function(o){return o.urban;});
+  var since=S.filter(function(o){return o.date&&o.date>="2019-01-01"&&o.grade!=="향토";});
+  var hy=S.filter(function(o){return o.grade==="향토";});
+  $("#devFacts").innerHTML=[
+    '<span class="big">'+y12+'</span><b>2012년 12월 31일 한 날에 지정.</b> 세종시 출범 첫해 말, 옛 충남·충북 지정유산을 시 유산으로 다시 지정한 것으로 보입니다. 시지정·문화유산자료의 대부분이 이날 날짜입니다.',
+    '<span class="big">'+since.length+'</span><b>2019년 이후 새로 지정·등록</b>(향토 제외) — 등록문화유산(산일제사 공장·부강성당·김재식 가옥), 국세청 소장 근대 문서, 비암사 청한당탑·승탑, 그리고 2025년 한솔동 고분군(사적)·비암사 소조아미타여래좌상(보물)·등곡리동제(시 무형유산).',
+    '<span class="big">'+stored.length+'</span><b>해체 보관 중인 정려.</b> '+stored.map(function(o){return esc(o.name);}).join(", ")+' — 행복도시 건설 구역에서 해체해 LH 등이 보관 중입니다. 다시 세울 자리가 정해지지 않아 지금은 볼 수 없습니다.',
+    '<span class="big">'+hy.length+'</span><b>향토유산은 국가유산청 자료 밖.</b> 국가유산 검색·포털에 없어 사진·설명·좌표가 공개돼 있지 않습니다. 이 상황판의 향토유산 위치는 시 표 소재지를 주소 검색으로 옮긴 것입니다.'
+  ].map(function(t){return '<li>'+t+'</li>';}).join("");
+  var nU=urban.length,nR=S.filter(function(o){return o.unit&&!o.urban;}).length;
+  var uDong=D.units.units.filter(function(u){return u.kind==="dong";}).length;
+  $("#urbanBars").innerHTML=[["행복도시(동 "+uDong+"곳)",nU,"var(--accent)"],["읍면(1읍 9면)",nR,"var(--ink3)"],["해체 보관·소재 불명",S.length-nU-nR,"var(--warn)"]].map(function(r){
+    return '<div class="br"><span>'+r[0]+'</span><span class="trk"><i style="width:'+(r[1]/S.length*100)+'%;background:'+r[2]+'"></i></span><span class="v">'+r[1]+'건</span></div>';}).join("");
+  $("#urbanList").innerHTML='<p class="src" style="margin:0 0 4px">행복도시 안 유산 — 신도시 한가운데 남은 옛 시간</p><div class="mini">'+urban.map(function(o){return '<button type="button" class="chip" data-id="'+o.id+'"><i>'+o.icon+'</i>'+esc(shortName(o))+'<em>'+esc(o.unit)+'</em></button>';}).join("")+'</div>'
+    +'<p class="src">한솔동 고분군은 행복도시를 짓는 과정의 발굴로 드러난 백제 고분으로, 공원 안에 보존돼 2025년 국가 사적이 되었습니다. 동 지역 유산 상당수는 옛 연기군 남면·동면 마을에서 이어진 것입니다.</p>';
+  $$("#urbanList [data-id]").forEach(function(b){b.addEventListener("click",function(){openDetail(b.dataset.id);});});
+})();
+
+// ── ⑥ 향유
+(function(){
+  var ec=$("#easeChips");[["easy","쉬움"],["mid","보통"],["hard","어려움"],["na","판단 안 함"]].forEach(function(e){var b=document.createElement("button");b.type="button";b.className="chip";b.dataset.e=e[0];
+    b.innerHTML=e[1]+'<em>'+S.filter(function(o){return e[0]==="na"?!o.ease:o.ease===e[0];}).length+'</em>';ec.appendChild(b);});
+  ec.addEventListener("click",function(e){var b=e.target.closest("[data-e]");if(!b)return;state.ease=state.ease===b.dataset.e?null:b.dataset.e;$$("#easeChips [data-e]").forEach(function(x){x.classList.toggle("on",x.dataset.e===state.ease);});paintMarkers(true);});
+  var gg=[["국가지정"],["시지정"],["문화유산자료"],["등록"],["향토"]];
+  $("#easeBars").innerHTML=gg.map(function(g){var L=S.filter(function(o){return o.grade===g[0];});var t=L.length;
+    var seg=[["easy","var(--good)"],["mid","var(--warn)"],["hard","var(--bad)"],[null,"var(--ink3)"]].map(function(s){var k=L.filter(function(o){return (o.ease||null)===s[0];}).length;
+      return k?'<i style="width:'+(k/t*100)+'%;background:'+s[1]+'" title="'+(s[0]?EASE[s[0]]:"판단 안 함")+' '+k+'건"></i>':"";}).join("");
+    var e=L.filter(function(o){return o.ease==="easy";}).length;
+    return '<div class="br"><span>'+GN[g[0]]+'</span><span class="trk">'+seg+'</span><span class="v">쉬움 '+pct(e,t)+'%</span></div>';}).join("");
+  var vk=["outdoor","temple","museum","office","family","event","stored"];
+  $("#viewBars").innerHTML=vk.map(function(v){var k=S.filter(function(o){return o.view===v;}).length;return k?'<div class="br"><span>'+VIEW[v]+'</span><span class="trk"><i style="width:'+(k/S.length*100)+'%;background:var(--accent)"></i></span><span class="v">'+k+'건</span></div>':"";}).join("");
+  var L=S.filter(function(o){return o.lon!=null&&!o.approx&&o.view!=="event";});
+  var b500=L.filter(function(o){return o.stop_m<=500;}).length, b1k=L.filter(function(o){return o.stop_m>1000;});
+  var natFar=b1k.filter(function(o){return o.grade==="국가지정"||o.grade==="시지정";});
+  $("#busFacts").innerHTML=['<span class="big">'+pct(b500,L.length)+'%</span><b>정류장 500m 안</b> — 위치가 정확한 '+L.length+'건 가운데 '+b500+'건(직선거리). 배차 간격은 반영하지 못했습니다(TAGO 노선 정보 활용신청 전).',
+    '<span class="big">'+b1k.length+'</span><b>정류장이 1km 넘게 떨어진 유산</b> — 국가·시 지정: '+natFar.map(function(o){return '<a href="#" data-id="'+o.id+'">'+esc(shortName(o))+'</a>';}).join(", ")+'.',
+    '<span class="big">'+S.filter(function(o){return o.view==="museum";}).length+'</span><b>세종시립민속박물관(전의면)</b>에서 실내로 볼 수 있는 기록·유물 — 지형과 날씨에 상관없이 누릴 수 있는 거의 유일한 경로입니다.'].map(function(t){return '<li>'+t+'</li>';}).join("");
+  $$("#busFacts [data-id]").forEach(function(a){a.addEventListener("click",function(e){e.preventDefault();openDetail(a.dataset.id);});});
+  $("#infoBars").innerHTML=gg.map(function(g){var L=S.filter(function(o){return o.grade===g[0];});var k=L.filter(function(o){return o.img||o.desc;}).length;
+    return '<div class="br"><span>'+GN[g[0]]+'</span><span class="trk"><i style="width:'+(k/L.length*100)+'%;background:var(--accent)"></i><i style="width:'+((L.length-k)/L.length*100)+'%;background:var(--rule)"></i></span><span class="v">'+k+'/'+L.length+'</span></div>';}).join("");
+  var bl=S.filter(function(o){return o.ease==="hard"&&!o.img&&!o.desc;});
+  $("#blind").innerHTML=bl.map(function(o){return '<button type="button" class="chip" data-id="'+o.id+'"><i>'+o.icon+'</i>'+esc(shortName(o))+'</button>';}).join("")+'<span class="src" style="align-self:center">'+bl.length+'건</span>';
+  $$("#blind [data-id]").forEach(function(b){b.addEventListener("click",function(){openDetail(b.dataset.id);});});
+})();
+
+// ── 탭
+function setTab(t){state.tab=t;$$(".tab").forEach(function(b){b.classList.toggle("on",b.dataset.tab===t);});$$(".pane").forEach(function(p){p.classList.toggle("on",p.id==="pane-"+t);});
+  map.getSource("path")&&map.getSource("path").setData({type:"FeatureCollection",features:[]});
+  if(map.getLayer("u-fill"))map.setPaintProperty("u-fill","fill-opacity",t==="dev"?["case",["==",["get","dong"],1],0.12,0]:0);
+  try{history.replaceState(null,"","#"+t);}catch(e){}
+  if(t==="find")renderFind();
+  else if(t==="era")setYear(state.year,true);
+  else if(t==="course")setCourse(state.course||D.courses[0].id);
+  else if(t==="cal")renderCal();
+  else {paintMarkers(true);if(t==="dev")fitTo(S.filter(function(o){return o.urban&&o.lon!=null;}).concat([{lon:127.24,lat:36.47},{lon:127.32,lat:36.53}]));else map.fitBounds([[127.13,36.42],[127.40,36.74]],{padding:20});}}
+$$(".tab").forEach(function(b){b.addEventListener("click",function(){setTab(b.dataset.tab);});});
+var h=(location.hash||"").replace("#","");
+map.on("load",function(){setBase();setTab(["find","era","course","cal","dev","acc"].indexOf(h)>=0?h:"find");});
+setYear(2026,false);
+
+// ── 3D 보기
+var m3=null,B3D=null,spinning=false,cur3=null,exag=1.5;
+function sat(){return B.vworld&&!baseFail?B.sat:B.fb_sat;}
+function bldGeo(o){var L=(B3D&&B3D[o.id])||[];return {type:"FeatureCollection",features:L.map(function(b){
+  return {type:"Feature",properties:{h:b.h},geometry:{type:"Polygon",coordinates:[b.r.map(function(p){return [o.lon+p[0]/KX,o.lat+p[1]/KY];})]}};})};}
+function open3d(id){var o=BY[id];cur3=o;$("#m3d").classList.add("on");document.body.style.overflow="hidden";
+  $("#cap3d").innerHTML='<b>'+o.icon+' '+esc(o.name)+'</b>'+esc(GN[o.grade]+" · "+o.kind+" · "+(o.addr||""))
+    +'<br>위성사진·지형·주변 건물 높이로 다시 그린 장면입니다(유산의 정밀 3D 모형 아님).'+(o.approx?' <b style="display:inline;font-size:12px;color:#E9B865">위치는 대략</b>':'')
+    +(o.elev!=null?'<br>해발 약 '+o.elev+'m'+(o.rise!=null?' · 가까운 길보다 '+(o.rise>=0?o.rise+'m 높음':(-o.rise)+'m 낮음'):''):'')
+    +'<br><a href="https://www.data.go.kr/tcs/dss/selectDataSetList.do?keyword='+encodeURIComponent("국가유산 3D")+'" target="_blank" rel="noopener">국가유산 3D 데이터 찾아보기 ↗</a>';
+  var go=function(){
+    if(!m3){m3=new maplibregl.Map({container:"map3d",attributionControl:{compact:true},maxPitch:80,
+      style:{version:8,sources:{sat:{type:"raster",tiles:[sat()],tileSize:256,maxzoom:19,attribution:"© VWorld / Esri · 지형 © AWS Terrain Tiles"},
+        dem:{type:"raster-dem",tiles:[B.dem],tileSize:256,encoding:"terrarium",maxzoom:15},
+        dem2:{type:"raster-dem",tiles:[B.dem],tileSize:256,encoding:"terrarium",maxzoom:15},
+        bld:{type:"geojson",data:bldGeo(o)}},
+        layers:[{id:"sat",type:"raster",source:"sat"},{id:"hs",type:"hillshade",source:"dem2",paint:{"hillshade-exaggeration":0.3,"hillshade-shadow-color":"#000"}},
+          {id:"bld",type:"fill-extrusion",source:"bld",paint:{"fill-extrusion-color":"#EDE8DC","fill-extrusion-height":["get","h"],"fill-extrusion-opacity":0.82}}],
+        terrain:{source:"dem",exaggeration:exag}},
+      center:[o.lon,o.lat],zoom:16.2,pitch:62,bearing:-25});
+      m3.on("error",function(e){if(e&&e.sourceId==="sat"&&B.vworld&&!baseFail){baseFail=true;try{m3.getSource("sat").setTiles([B.fb_sat]);}catch(x){}}});
+      m3.pin=new maplibregl.Marker({element:pinEl(o)}).setLngLat([o.lon,o.lat]).addTo(m3);}
+    else{m3.resize();m3.getSource("bld").setData(bldGeo(o));m3.pin.remove();m3.pin=new maplibregl.Marker({element:pinEl(o)}).setLngLat([o.lon,o.lat]).addTo(m3);
+      m3.jumpTo({center:[o.lon,o.lat],zoom:16.2,pitch:62,bearing:-25});}
+    $("#stat3d").textContent="둘레 400m 건물 "+((B3D&&B3D[o.id])||[]).length+"동 · 끌어서 이동, 오른쪽 끌기/두 손가락으로 회전";};
+  if(B3D)go();else{$("#stat3d").textContent="건물 자료를 불러오는 중…";fetch("b3d.json").then(function(r){return r.json();}).then(function(j){B3D=j;go();}).catch(function(){B3D={};go();});}}
+function pinEl(o){var e=document.createElement("div");e.className="pin";e.textContent=o.icon;return e;}
+$$(".m3d .ctrl [data-r]").forEach(function(b){b.addEventListener("click",function(){m3&&m3.easeTo({bearing:m3.getBearing()+(+b.dataset.r),duration:500});});});
+$$(".m3d .ctrl [data-p]").forEach(function(b){b.addEventListener("click",function(){m3&&m3.easeTo({pitch:Math.max(0,Math.min(80,m3.getPitch()+(+b.dataset.p))),duration:400});});});
+$$(".m3d .ctrl [data-z]").forEach(function(b){b.addEventListener("click",function(){m3&&m3.easeTo({zoom:m3.getZoom()+(+b.dataset.z)*0.7,duration:400});});});
+$("#spin").addEventListener("click",function(){if(!m3)return;spinning=!spinning;this.textContent=spinning?"⏸️ 멈추기":"🔄 한 바퀴 돌아보기";
+  var self=this;(function step(){if(!spinning)return;m3.rotateTo(m3.getBearing()+120,{duration:6000,easing:function(t){return t;}});m3.once("moveend",function(){if(spinning)step();});})();});
+$("#ex").addEventListener("click",function(){if(!m3)return;exag=exag>=2.4?1:(exag===1?1.5:2.5);m3.setTerrain({source:"dem",exaggeration:exag});this.textContent="⛰️ 지형 과장 "+exag+"배";});
+function close3d(){$("#m3d").classList.remove("on");document.body.style.overflow="";spinning=false;$("#spin").textContent="🔄 한 바퀴 돌아보기";}
+$("#close3d").addEventListener("click",close3d);
+document.addEventListener("keydown",function(e){if(e.key==="Escape"){if($("#m3d").classList.contains("on"))close3d();else $("#sheet").classList.remove("on");}});
+})();
+</script>
+</body></html>
