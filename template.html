@@ -102,7 +102,12 @@ summary{cursor:pointer;padding:10px 0;font-size:13px;color:var(--ink2)}
 .maplibregl-ctrl-attrib{font-size:10px}
 .mk{width:28px;height:28px;border-radius:50%;background:var(--mk);border:1.5px solid var(--ink3);display:flex;align-items:center;justify-content:center;
   font-size:15px;line-height:1;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.22);position:relative;transition:transform .12s;user-select:none}
-.mk:hover{transform:scale(1.18);z-index:3}
+.mkw{width:0;height:0;display:flex;align-items:center;justify-content:center;overflow:visible}
+.mkw:hover{z-index:3}
+.mapbox.far .mk{transform:scale(.62)}.mapbox.mid .mk{transform:scale(.8)}
+.mapbox.far .mk:hover,.mapbox.mid .mk:hover{transform:scale(1.1)}
+.mk{flex:none}
+.mk:hover{transform:scale(1.18)}
 .mk.g4{width:36px;height:36px;font-size:19px;border:2.5px solid var(--accent)}
 .mk.g3{width:31px;height:31px;font-size:17px;border:2px solid var(--accent)}
 .mk.g2{border-color:var(--ink2)}
@@ -485,6 +490,9 @@ var map=new maplibregl.Map({container:"map",attributionControl:{compact:true},
       {id:"path",type:"line",source:"path",paint:{"line-color":"#152484","line-width":3,"line-dasharray":[2,1.4],"line-opacity":0.85}}]},
   bounds:[[127.13,36.42],[127.40,36.74]],fitBoundsOptions:{padding:20},maxZoom:18.5,minZoom:9});
 map.addControl(new maplibregl.NavigationControl({showCompass:false}),"top-left");
+// 멀리서 볼 때는 마커를 작게(겹침 줄이기) — 크기는 안쪽 .mk 에만 건다
+function farCls(){var z=map.getZoom();var mb=document.querySelector(".mapbox");mb.classList.toggle("far",z<10.3);mb.classList.toggle("mid",z>=10.3&&z<11.3);}
+map.on("zoom",farCls);map.on("load",farCls);
 map.on("error",function(e){if(e&&e.sourceId==="base"&&B.vworld&&!baseFail){baseFail=true;setBase();}});
 function setBase(){if(!map.getSource("base"))return;try{map.getSource("base").setTiles(baseTiles());}catch(e){}
   if(map.getLayer("u-line"))map.setPaintProperty("u-line","line-color",dark()?"#B2B1AC":"#55554f");
@@ -502,7 +510,7 @@ var groups=[], GOF={};
     var el=document.createElement("div");el.className="mk";el.innerHTML='<span class="e"></span>';
     el.addEventListener("click",function(ev){ev.stopPropagation();var vis=g.ids.filter(visible);openDetail(vis[0]||g.ids[0],vis.length>1?vis:null);});
     el.addEventListener("mouseenter",function(){el.title=g.ids.filter(visible).map(function(i){return BY[i].name;}).join(" · ");});
-    g.el=el;g.mk=new maplibregl.Marker({element:el,anchor:"center"}).setLngLat([g.lon,g.lat]).addTo(map);});})();
+    var wr=document.createElement("div");wr.className="mkw";wr.appendChild(el);g.wrap=wr;g.el=el;g.mk=new maplibregl.Marker({element:wr,anchor:"center"}).setLngLat([g.lon,g.lat]).addTo(map);});})();
 
 function matchFind(o){
   if(state.grade&&o.grade!==state.grade)return false;
@@ -522,7 +530,7 @@ var shown={};
 function paintMarkers(animate){
   var cnum={};var c=state.tab==="course"?courseOf(state.course):null;if(c)c.ids.forEach(function(id,i){cnum[id]=i+1;});
   groups.forEach(function(g){var vis=g.ids.filter(visible);var el=g.el;
-    var on=vis.length>0;el.style.display=on?"":"none";
+    var on=vis.length>0;g.wrap.style.display=on?"":"none";
     if(!on){shown[g.ids[0]]=false;return;}
     var top=BY[vis[0]];
     el.className="mk c-"+top.cat+" g"+GL[top.grade]+(state.sel&&vis.indexOf(state.sel)>=0?" on":"");
