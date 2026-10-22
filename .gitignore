@@ -4,3 +4,4 @@ data/raw/osm_roads.json
 data/raw/dem/
 data/raw/geocode_cache.json
 site/
+data/b3d.json

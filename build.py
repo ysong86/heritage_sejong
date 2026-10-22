@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""data/analysis.json + template.html → site/index.html (+ site/b3d.json)
+"""data/analysis.json + template.html → site/index.html
 
   C:\\Python313\\python.exe build.py
 
@@ -49,7 +49,7 @@ COURSES = [
      "q": "왜 이 고장에는 산성이 이렇게 많을까",
      "body": ["시 기념물 산성 넷에 향토유산 산성 여섯(부강면)이 더해져 세종에는 이름 붙은 옛 성이 열 곳이 넘습니다.",
               "금강과 미호천이 만나는 물길, 충청 내륙으로 드는 고갯길이 겹치는 자리라 성이 촘촘했던 것으로 봅니다.",
-              "대부분 산 위에 있어 걷기에 좋지만 휠체어·유모차로는 닿기 어렵습니다 — '누구나 누리는 유산' 탭의 3D 보기로 지형을 먼저 살펴보세요."],
+              "대부분 산 위에 있어 걷기에는 좋지만 휠체어·유모차로는 닿기 어렵습니다('누구나 누리는 유산' 탭)."],
      "stops": ["운주산성", "금이성", "이성", "부강 남성골산성", "테뫼산성", "성재산성", "화봉산성", "복두산성", "성산성", "노고봉산성"],
      "line": False},
     {"id": "gate", "icon": "🎖️", "title": "충·효·열, 마을이 기억한 사람들",
@@ -148,9 +148,7 @@ def main():
     t = t.replace("/*__DATA__*/null", data_js).replace("<!--__FOOT__-->", foot)
     os.makedirs(SITE, exist_ok=True)
     open(os.path.join(SITE, "index.html"), "w", encoding="utf-8").write(t)
-    shutil.copyfile(os.path.join(HERE, "data", "b3d.json"), os.path.join(SITE, "b3d.json"))
-    print("site/index.html %.0f KB, b3d.json %.1f MB" % (os.path.getsize(os.path.join(SITE, "index.html")) / 1024,
-                                                         os.path.getsize(os.path.join(SITE, "b3d.json")) / 1e6))
+    print("site/index.html %.0f KB" % (os.path.getsize(os.path.join(SITE, "index.html")) / 1024))
 
 
 if __name__ == "__main__":

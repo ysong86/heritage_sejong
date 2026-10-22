@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>세종 국가유산 상황판</title>
-<meta name="description" content="세종시 국가유산 지정(등록) 현황 137건을 이모지 지도로 찾고, 시대의 지층·이야기 코스·세시 달력·개발과 유산·누구나 누리는 유산(향유권·물리적 접근)·3D 보기로 읽습니다.">
+<meta name="description" content="세종시 국가유산 지정(등록) 현황 137건을 이모지 지도로 찾고, 시대의 지층·이야기 코스·세시 달력·개발과 유산·누구나 누리는 유산(향유권·물리적 접근)으로 읽습니다.">
 <script>(function(){try{var t=localStorage.getItem('heritage-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Jua&display=swap">
@@ -214,19 +214,6 @@ summary{cursor:pointer;padding:10px 0;font-size:13px;color:var(--ink2)}
 .note b{color:var(--ink)}
 .check{columns:2;font-size:12.5px;color:var(--ink2);padding-left:18px;margin:6px 0}
 .mini{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}
-/* 3D */
-.m3d{position:fixed;inset:0;z-index:100;background:#0b0b0a;display:none}
-.m3d.on{display:block}
-#map3d{position:absolute;inset:0}
-.m3d .cap{position:absolute;left:14px;top:14px;z-index:2;max-width:min(440px,calc(100% - 28px));background:rgba(15,15,14,.82);color:#EDECE8;padding:12px 14px;font-size:12.5px;line-height:1.5}
-.m3d .cap b{font-size:17px;display:block;margin-bottom:2px}
-.m3d .cap a{color:#8EA0F2}
-.m3d .ctrl{position:absolute;right:14px;top:14px;z-index:2;display:grid;grid-template-columns:repeat(3,40px);gap:4px}
-.m3d .ctrl button{height:36px;background:rgba(15,15,14,.82);color:#EDECE8;border:1px solid #EDECE840;font-size:14px}
-.m3d .ctrl button.wide{grid-column:span 3;font-size:12.5px}
-.m3d .close{position:absolute;right:14px;bottom:24px;z-index:2;background:#EDECE8;color:#111;border:0;padding:9px 16px;font-size:13px;font-weight:600}
-.m3d .pin{font-size:30px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.6))}
-.m3d .stat{position:absolute;left:14px;bottom:24px;z-index:2;color:#EDECE8;font-size:11.5px;background:rgba(15,15,14,.7);padding:5px 9px}
 .method{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 32px;font-size:13px;color:var(--ink2)}
 .method p{margin:0 0 10px}
 .foot{margin-top:40px;border-top:1px solid var(--ink);padding-top:14px;font-size:12.5px;color:var(--ink2);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
@@ -330,7 +317,7 @@ h2{border-bottom-width:1.5px}
 <h1>세종의 시간은 <em>어디에 남아 있나</em></h1>
 <div class="parade" id="parade" aria-hidden="true"></div>
 <p class="lede">세종시가 지정·등록해 관리하는 국가유산 137건(국가지정·시지정·문화유산자료·등록·향토유산)을 한 장의 지도에 올렸습니다.
-이모지로 종류를 나누고, 시대의 지층·이야기 코스·세시 달력으로 엮어 읽고, 개발 속 유산의 자리와 누구나 누릴 수 있는지(향유권·물리적 접근)까지 살펴봅니다. 유산을 누르면 사진·설명과 3D 보기가 열립니다.</p>
+이모지로 종류를 나누고, 시대의 지층·이야기 코스·세시 달력으로 엮어 읽고, 개발 속 유산의 자리와 누구나 누릴 수 있는지(향유권·물리적 접근)까지 살펴봅니다. 유산을 누르면 사진·설명이 열립니다.</p>
 <div class="kpis" id="kpis"></div></section>
 
 <nav class="tabs" role="tablist">
@@ -404,7 +391,7 @@ h2{border-bottom-width:1.5px}
   <h3>📷 정보로 만나기 — 사진·설명이 공개된 유산</h3>
   <div class="bars" id="infoBars"></div>
   <h3>🌫️ 현장에서도 온라인에서도 닿기 어려운 유산</h3>
-  <p class="src" style="margin-top:0">걷기 '어려움'이면서 국가유산청 사진·설명도 없는 곳. 3D 보기로 지형을 먼저 볼 수 있습니다.</p>
+  <p class="src" style="margin-top:0">걷기 '어려움'이면서 국가유산청 사진·설명도 없는 곳 — 사진·해설을 먼저 채워야 할 후보입니다.</p>
   <div class="mini" id="blind"></div>
   <div class="note"><b>📝 현장 조사가 필요한 것</b> — 향유권을 제대로 재려면 공개 자료에 없는 아래 항목을 유산마다 확인해야 합니다.
   <ul class="check"><li>입구 단차·경사로·노면(흙·자갈·계단)</li><li>장애인 주차·화장실</li><li>점자·촉각 안내판, 큰 글씨 안내</li><li>수어·음성 해설(QR)</li><li>쉼터·그늘·벤치</li><li>개방 시간·사전 연락 필요 여부</li><li>다국어 안내</li><li>야간 조명·안전</li></ul></div>
@@ -425,22 +412,13 @@ h2{border-bottom-width:1.5px}
 <p><b>분류·아이콘.</b> 종목과 이름의 낱말로 나눈 연구진 분류입니다(불교 유산·산성·정려 등). 국가유산의 공식 분류는 상세 카드의 '국가유산청 분류'에 있습니다.</p>
 </div><div>
 <p><b>걷기 쉬움 <span class="est">(연구진 추정)</span>.</b> 차가 들어가는 길은 OpenStreetMap 도로(마을 안길·농로 포함, 임도·고속도로 제외, <span id="osmAt"></span> 기준), 고도는 AWS Terrain Tiles(약 30m 격자)로 유산 자리와 가장 가까운 길의 높이 차를 쟀습니다. 버스정류장은 국토교통부 TAGO 정류소(<span id="nStops"></span>곳), 거리는 모두 직선입니다.</p>
-<p><b>3D 보기.</b> 유산 자리를 위성사진(브이월드, 없으면 Esri)·지형(AWS Terrain Tiles)·건물 높이(브이월드 GIS건물통합정보, 둘레 400m)로 다시 그린 입체 장면입니다. 유산 자체를 정밀 측량한 3D 모형은 아닙니다. 국가유산청 '국가유산 디지털 서비스'의 3D 에셋에서 세종 유산은 찾지 못했습니다.</p>
 <p><b>세시 달력·코스.</b> 행사 시기는 전통적으로 알려진 철이고 날짜는 해마다 확인해야 합니다. 코스 글은 공개된 해설을 바탕으로 연구진이 썼습니다.</p>
 <p class="src" id="builtAt"></p>
 </div></div>
 <!--__FOOT__-->
 </div>
 
-<div class="m3d" id="m3d" role="dialog" aria-label="3D 보기"><div id="map3d"></div>
-<div class="cap" id="cap3d"></div>
-<div class="ctrl"><button type="button" data-r="-30" title="왼쪽으로 돌리기">◀</button><button type="button" data-p="10" title="더 눕히기">▲</button><button type="button" data-r="30" title="오른쪽으로 돌리기">▶</button>
-<button type="button" data-z="1" title="가까이">＋</button><button type="button" data-p="-10" title="세우기">▼</button><button type="button" data-z="-1" title="멀리">－</button>
-<button type="button" class="wide" id="spin">🔄 한 바퀴 돌아보기</button><button type="button" class="wide" id="ex">⛰️ 지형 과장 1.5배</button></div>
-<div class="stat" id="stat3d"></div>
-<button type="button" class="close" id="close3d">👋 닫기</button></div>
-
-<script>window.__HER=/*__DATA__*/null;</script>
+/*__DATA__*/null;</script>
 <script>
 (function(){
 var D=window.__HER, $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
@@ -580,14 +558,12 @@ function openDetail(id,siblings){var o=BY[id];state.sel=id;
   $("#sheetKick").textContent=(CAT[o.cat]||{}).name||"";
   $("#sheetBody").innerHTML=ph+'<h4>'+o.icon+' '+esc(o.name)+'</h4><div class="hj">'+esc(o.hanja)+'</div>'
     +'<div class="kv">'+kv.map(function(r){return '<div>'+r[0]+'</div><div>'+esc(r[1])+'</div>';}).join("")+'</div>'+sib+desc+acc
-    +'<div class="acts">'+(o.lon!=null?'<button type="button" class="btn" id="go3d">🧊 3D로 보기</button>':'<button type="button" class="btn" disabled>위치 없음</button>')
-    +(o.url?'<a class="btn ghost" href="'+esc(o.url)+'" target="_blank" rel="noopener">📖 국가유산포털</a>':"")
+    +'<div class="acts">'+(o.url?'<a class="btn ghost" href="'+esc(o.url)+'" target="_blank" rel="noopener">📖 국가유산포털</a>':"")
     +(o.lon!=null?'<a class="btn ghost" href="https://map.kakao.com/link/map/'+encodeURIComponent(shortName(o))+','+o.lat+','+o.lon+'" target="_blank" rel="noopener">🧭 길찾기</a>':"")+'</div>';
   $("#sheet").classList.add("on");
   var md=$("#moreDesc");if(md)md.addEventListener("click",function(){$("#desc").classList.toggle("clip");md.textContent=$("#desc").classList.contains("clip")?"설명 더 보기":"접기";});
   $$("#sheetBody [data-go]").forEach(function(b){b.addEventListener("click",function(){openDetail(b.dataset.go,siblings);});});
   $$("#sheetBody .thumbs img").forEach(function(t){t.addEventListener("click",function(){$("#ph").src=t.src;$$("#sheetBody .thumbs img").forEach(function(x){x.classList.toggle("on",x===t);});});});
-  var g3=$("#go3d");if(g3)g3.addEventListener("click",function(){open3d(id);});
   if(o.lon!=null){var z=Math.max(map.getZoom(),13.2);map.easeTo({center:[o.lon,o.lat],zoom:z,offset:[innerWidth>1000?-150:0,0],duration:600});}
   $$(".row").forEach(function(r){r.classList.toggle("on",r.dataset.id===id);});
   paintMarkers(false);}
@@ -764,42 +740,7 @@ var h=(location.hash||"").replace("#","");
 map.on("load",function(){setBase();setTab(["find","era","course","cal","dev","acc"].indexOf(h)>=0?h:"find");});
 setYear(2026,false);
 
-// ── 3D 보기
-var m3=null,B3D=null,spinning=false,cur3=null,exag=1.5;
-function sat(){return B.vworld&&!baseFail?B.sat:B.fb_sat;}
-function bldGeo(o){var L=(B3D&&B3D[o.id])||[];return {type:"FeatureCollection",features:L.map(function(b){
-  return {type:"Feature",properties:{h:b.h},geometry:{type:"Polygon",coordinates:[b.r.map(function(p){return [o.lon+p[0]/KX,o.lat+p[1]/KY];})]}};})};}
-function open3d(id){var o=BY[id];cur3=o;$("#m3d").classList.add("on");document.body.style.overflow="hidden";
-  $("#cap3d").innerHTML='<b>'+o.icon+' '+esc(o.name)+'</b>'+esc(GN[o.grade]+" · "+o.kind+" · "+(o.addr||""))
-    +'<br>위성사진·지형·주변 건물 높이로 다시 그린 장면입니다(유산의 정밀 3D 모형 아님).'+(o.approx?' <b style="display:inline;font-size:12px;color:#E9B865">위치는 대략</b>':'')
-    +(o.elev!=null?'<br>해발 약 '+o.elev+'m'+(o.rise!=null?' · 가까운 길보다 '+(o.rise>=0?o.rise+'m 높음':(-o.rise)+'m 낮음'):''):'')
-    +'<br><a href="https://www.data.go.kr/tcs/dss/selectDataSetList.do?keyword='+encodeURIComponent("국가유산 3D")+'" target="_blank" rel="noopener">국가유산 3D 데이터 찾아보기 ↗</a>';
-  var go=function(){
-    if(!m3){m3=new maplibregl.Map({container:"map3d",attributionControl:{compact:true},maxPitch:80,
-      style:{version:8,sources:{sat:{type:"raster",tiles:[sat()],tileSize:256,maxzoom:19,attribution:"© VWorld / Esri · 지형 © AWS Terrain Tiles"},
-        dem:{type:"raster-dem",tiles:[B.dem],tileSize:256,encoding:"terrarium",maxzoom:15},
-        dem2:{type:"raster-dem",tiles:[B.dem],tileSize:256,encoding:"terrarium",maxzoom:15},
-        bld:{type:"geojson",data:bldGeo(o)}},
-        layers:[{id:"sat",type:"raster",source:"sat"},{id:"hs",type:"hillshade",source:"dem2",paint:{"hillshade-exaggeration":0.3,"hillshade-shadow-color":"#000"}},
-          {id:"bld",type:"fill-extrusion",source:"bld",paint:{"fill-extrusion-color":"#EDE8DC","fill-extrusion-height":["get","h"],"fill-extrusion-opacity":0.82}}],
-        terrain:{source:"dem",exaggeration:exag}},
-      center:[o.lon,o.lat],zoom:16.2,pitch:62,bearing:-25});
-      m3.on("error",function(e){if(e&&e.sourceId==="sat"&&B.vworld&&!baseFail){baseFail=true;try{m3.getSource("sat").setTiles([B.fb_sat]);}catch(x){}}});
-      m3.pin=new maplibregl.Marker({element:pinEl(o)}).setLngLat([o.lon,o.lat]).addTo(m3);}
-    else{m3.resize();m3.getSource("bld").setData(bldGeo(o));m3.pin.remove();m3.pin=new maplibregl.Marker({element:pinEl(o)}).setLngLat([o.lon,o.lat]).addTo(m3);
-      m3.jumpTo({center:[o.lon,o.lat],zoom:16.2,pitch:62,bearing:-25});}
-    $("#stat3d").textContent="둘레 400m 건물 "+((B3D&&B3D[o.id])||[]).length+"동 · 끌어서 이동, 오른쪽 끌기/두 손가락으로 회전";};
-  if(B3D)go();else{$("#stat3d").textContent="건물 자료를 불러오는 중…";fetch("b3d.json").then(function(r){return r.json();}).then(function(j){B3D=j;go();}).catch(function(){B3D={};go();});}}
-function pinEl(o){var e=document.createElement("div");e.className="pin";e.textContent=o.icon;return e;}
-$$(".m3d .ctrl [data-r]").forEach(function(b){b.addEventListener("click",function(){m3&&m3.easeTo({bearing:m3.getBearing()+(+b.dataset.r),duration:500});});});
-$$(".m3d .ctrl [data-p]").forEach(function(b){b.addEventListener("click",function(){m3&&m3.easeTo({pitch:Math.max(0,Math.min(80,m3.getPitch()+(+b.dataset.p))),duration:400});});});
-$$(".m3d .ctrl [data-z]").forEach(function(b){b.addEventListener("click",function(){m3&&m3.easeTo({zoom:m3.getZoom()+(+b.dataset.z)*0.7,duration:400});});});
-$("#spin").addEventListener("click",function(){if(!m3)return;spinning=!spinning;this.textContent=spinning?"⏸️ 멈추기":"🔄 한 바퀴 돌아보기";
-  var self=this;(function step(){if(!spinning)return;m3.rotateTo(m3.getBearing()+120,{duration:6000,easing:function(t){return t;}});m3.once("moveend",function(){if(spinning)step();});})();});
-$("#ex").addEventListener("click",function(){if(!m3)return;exag=exag>=2.4?1:(exag===1?1.5:2.5);m3.setTerrain({source:"dem",exaggeration:exag});this.textContent="⛰️ 지형 과장 "+exag+"배";});
-function close3d(){$("#m3d").classList.remove("on");document.body.style.overflow="";spinning=false;$("#spin").textContent="🔄 한 바퀴 돌아보기";}
-$("#close3d").addEventListener("click",close3d);
-document.addEventListener("keydown",function(e){if(e.key==="Escape"){if($("#m3d").classList.contains("on"))close3d();else $("#sheet").classList.remove("on");}});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")$("#sheet").classList.remove("on");});
 })();
 </script>
 </body></html>
