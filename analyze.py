@@ -32,7 +32,7 @@ CATS = [
     ("nature", "자연유산", "🌳"),
     ("modern", "근대 건축", "🏛️"),
     ("buddha", "불교 유산", "☸️"),
-    ("fort", "산성·옛터", "🏯"),
+    ("fort", "산성·옛터", "🧱"),
     ("hall", "향교·서원·사당", "🕯️"),
     ("gate", "충·효·열 정려", "🎖️"),
     ("tomb", "무덤·비석", "🪦"),
@@ -60,13 +60,13 @@ def classify(it):
     if re.search(r"(불비상|여래|나한|불상|미륵|탱화|탱|도$|도 초본|시왕도|신중도|산신도|독성도|현왕도|칠성도|석탑|승탑|청한당탑|부도|극락보전|선요)", n):
         return "buddha", "🪷" if re.search(r"(여래|나한|불상|미륵|불비상)", n) else ("🪨" if re.search(r"(탑|부도)", n) else "☸️")
     if re.search(r"(산성|성$|^이성|금이성|고분군|고인돌|입석)", n):
-        return "fort", "🗿" if re.search(r"(고인돌|입석)", n) else ("⚱️" if "고분" in n else "🏯")
+        return "fort", "🪨" if re.search(r"(고인돌|入石|입석)", n) else ("⚱️" if "고분" in n else "🧱")
     if "정려" in n or "열녀문" in n or "효자각" in n:
         return "gate", "🎖️"
     if re.search(r"(묘|비$|신도비|척화비|효교비|묘비|장승$|석장승)", n):
         return "tomb", "🗿" if "장승" in n else "🪦"
     if re.search(r"(향교|서원|사$|사우|영당|정$|각$|재$|가묘|부조묘|모인당|숭덕사)", n):
-        return "hall", "📚" if re.search(r"(향교|서원)", n) else ("🏯" if re.search(r"(정$|독락정)", n) else "🕯️")
+        return "hall", "📚" if re.search(r"(향교|서원)", n) else ("🌿" if re.search(r"(정$|독락정)", n) else "🕯️")
     return "record", "📜"
 
 
