@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>세종 국가유산 상황판</title>
+<title>세종 국가유산 읽기</title>
 <meta name="description" content="세종시 국가유산 지정(등록) 현황 137건을 이모지 지도로 찾고, 시대의 지층·이야기 코스·세시 달력·개발과 유산·누구나 누리는 유산(향유권·물리적 접근)으로 읽습니다.">
 <script>(function(){try{var t=localStorage.getItem('heritage-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -316,7 +316,7 @@ h2{border-bottom-width:1.5px}
 <body>
 <script src="https://ysong86.github.io/nav.js" data-site="heritage" defer></script>
 <div class="wrap">
-<header class="mast"><div class="brand"><b>세종 국가유산 상황판</b><span>HERITAGE · SEJONG</span></div>
+<header class="mast"><div class="brand"><b>세종 국가유산 읽기</b><span>HERITAGE · SEJONG</span></div>
 <div class="theme-toggle" role="group" aria-label="화면 테마"><button type="button" data-t="auto">자동</button><button type="button" data-t="light">밝게</button><button type="button" data-t="dark">어둡게</button></div></header>
 <section class="hero"><div class="kick" id="kick">문화유산 · 기준 2026.1.1 세종특별자치시 국가유산 지정(등록) 현황</div>
 <h1>세종의 시간은 <em>어디에 남아 있나</em></h1>
@@ -343,7 +343,7 @@ h2{border-bottom-width:1.5px}
   <div class="count" id="count"></div>
   <div class="list" id="list"></div>
   <details><summary>지정 현황 표 — 등급 × 종목 (시 현황표 2026.1.1)</summary><div class="tblwrap" id="kindTable"></div></details>
-  <details><summary>읍면동별 현황 — 이 상황판이 좌표로 센 수</summary><div class="tblwrap" id="unitTable"></div></details>
+  <details><summary>읍면동별 현황 — 이 화면이 좌표로 센 수</summary><div class="tblwrap" id="unitTable"></div></details>
 </section>
 
 <section class="pane" id="pane-era">
@@ -695,7 +695,7 @@ function renderCal(){var m=state.month;$$("#months .mo").forEach(function(b){b.c
     '<span class="big">'+y12+'</span><b>2012년 12월 31일 한 날에 지정.</b> 세종시 출범 첫해 말, 옛 충남·충북 지정유산을 시 유산으로 다시 지정한 것으로 보입니다. 시지정·문화유산자료의 대부분이 이날 날짜입니다.',
     '<span class="big">'+since.length+'</span><b>2019년 이후 새로 지정·등록</b>(향토 제외) — 등록문화유산(산일제사 공장·부강성당·김재식 가옥), 국세청 소장 근대 문서, 비암사 청한당탑·승탑, 그리고 2025년 한솔동 고분군(사적)·비암사 소조아미타여래좌상(보물)·등곡리동제(시 무형유산).',
     '<span class="big">'+stored.length+'</span><b>해체 보관 중인 정려.</b> '+stored.map(function(o){return esc(o.name);}).join(", ")+' — 행복도시 건설 구역에서 해체해 LH 등이 보관 중입니다. 다시 세울 자리가 정해지지 않아 지금은 볼 수 없습니다.',
-    '<span class="big">'+hy.length+'</span><b>향토유산은 국가유산청 자료 밖.</b> 국가유산 검색·포털에 없어 사진·설명·좌표가 공개돼 있지 않습니다. 이 상황판의 향토유산 위치는 시 표 소재지를 주소 검색으로 옮긴 것입니다.'
+    '<span class="big">'+hy.length+'</span><b>향토유산은 국가유산청 자료 밖.</b> 국가유산 검색·포털에 없어 사진·설명·좌표가 공개돼 있지 않습니다. 이 화면의 향토유산 위치는 시 표 소재지를 주소 검색으로 옮긴 것입니다.'
   ].map(function(t){return '<li>'+t+'</li>';}).join("");
   var nU=urban.length,nR=S.filter(function(o){return o.unit&&!o.urban;}).length;
   var uDong=D.units.units.filter(function(u){return u.kind==="dong";}).length;
